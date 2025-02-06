@@ -4,7 +4,7 @@
 
 @section("content")
     <div class="col-12 col-md-6 col-lg-4">
-        <form method="POST" action="{{ route('auth.login') }}">
+        <form method="POST" action="{{ route('login') }}">
             @csrf
 
             <h1 class="mb-3">Login</h1>
@@ -25,7 +25,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary mb-3">Inloggen</button>
-            <p class="text-muted">Nog geen account? <a href="{{ route("auth.register") }}">Maak er hier een aan.</a></p>
+            <p class="text-muted">Nog geen account? <a href="{{ route("register") }}">Maak er hier een aan.</a></p>
         </form>
     </div>
 @endsection

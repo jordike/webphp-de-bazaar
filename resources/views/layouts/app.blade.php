@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
         <title>{{ env('APP_NAME') }} - @yield("title")</title>
     </head>
@@ -32,28 +32,28 @@
                     <ul class="navbar-nav ms-auto">
                         @auth
                             <li class="nav-item dropdown">
-                                <button class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
                                     {{ auth()->user()->name }}
-                                </button>
+                                </a>
 
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="{{ route('profile') }}">Profile</a>
+                                <div id="profile-dropdown" class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="#">Profile</a>
 
                                     <div class="dropdown-divider"></div>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    <form id="logout-form" class="d-none" action="{{ route('logout') }}" method="POST">
                                         @csrf
-
-                                        <button class="dropdown-item">Logout</button>
                                     </form>
+
+                                    <button class="dropdown-item" type="submit" form="logout-form">Logout</button>
                                 </div>
                             </li>
                         @else
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('auth.login') }}">Login</a>
+                                <a class="nav-link" href="{{ route('login') }}">Login</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('auth.register') }}">Register</a>
+                                <a class="nav-link" href="{{ route('register') }}">Register</a>
                             </li>
                         @endauth
                     </ul>
@@ -65,6 +65,7 @@
             @yield("content")
         </main>
 
-        <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     </body>
 </html>
