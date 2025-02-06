@@ -10,12 +10,12 @@
             <h1 class="mb-3">Login</h1>
 
             <div class="form-group mb-3">
-                <label for="email mb-2">E-mailadres</label>
+                <label for="email" class="mb-1">E-mailadres</label>
                 <input type="email" class="form-control" id="email" name="email" required autofocus>
             </div>
 
             <div class="form-group mb-3">
-                <label for="password mb-1">Wachtwoord</label>
+                <label for="password" class="mb-1">Wachtwoord</label>
                 <input type="password" class="form-control" id="password" name="password" required>
             </div>
 
