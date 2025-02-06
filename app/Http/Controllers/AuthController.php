@@ -15,7 +15,7 @@ class AuthController extends Controller
             return redirect()->route('home');
         }
 
-        return view("register");
+        return view("auth.register");
     }
 
     public function registerPost(Request $request)
@@ -23,7 +23,9 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|min:1',
             'email' => 'required|email',
-            'password' => 'required|min:6|',
+            'password' => 'required|min:6',
+            'password_confirmation' => 'required|same:password',
+            'role' => 'required',
         ]);
 
         $user = new User();
@@ -43,7 +45,7 @@ class AuthController extends Controller
             return redirect()->route('home');
         }
 
-        return view("login");
+        return view("auth.login");
     }
 
     public function loginPost(Request $request)

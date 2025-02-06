@@ -12,11 +12,19 @@
             <div class="form-group mb-3">
                 <label for="email" class="mb-1">E-mailadres</label>
                 <input type="email" class="form-control" id="email" name="email" required autofocus>
+
+                @error("email")
+                    <p class="text-danger">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="form-group mb-3">
                 <label for="password" class="mb-1">Wachtwoord</label>
                 <input type="password" class="form-control" id="password" name="password" required>
+
+                @error("password")
+                    <p class="text-danger">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="form-group form-check mb-3">

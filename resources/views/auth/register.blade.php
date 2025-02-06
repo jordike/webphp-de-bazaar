@@ -12,21 +12,37 @@
             <div class="form-group mb-3">
                 <label for="name" class="mb-1">Naam</label>
                 <input type="text" class="form-control" id="name" name="name" required autofocus>
+
+                @error("name")
+                    <p class="text-danger">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="form-group mb-3">
                 <label for="email" class="mb-1">E-mailadres</label>
                 <input type="email" class="form-control" id="email" name="email" required>
+
+                @error("email")
+                    <p class="text-danger">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="form-group mb-3">
                 <label for="password" class="mb-1">Wachtwoord</label>
                 <input type="password" class="form-control" id="password" name="password" required>
+
+                @error("password")
+                    <p class="text-danger">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="form-group mb-3">
                 <label for="password_confirmation" class="mb-1">Bevestig Wachtwoord</label>
                 <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+
+                @error("password_confirmation")
+                    <p class="text-danger">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="form-group mb-3">
@@ -38,6 +54,10 @@
                     <option value="2">Particuliere Adverteerder</option>
                     <option value="3">Zakelijke Adverteerder</option>
                 </select>
+
+                @error("role")
+                    <p class="text-danger">{{ $message }}</p>
+                @enderror
             </div>
 
             <button type="submit" class="btn btn-primary mb-3">Registreren</button>
