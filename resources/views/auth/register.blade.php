@@ -34,9 +34,9 @@
 
                 <select class="form-control" id="role" name="role" required>
                     <option value="">-- Selecteer een rol --</option>
-                    <option value="user">Gebruiker</option>
-                    <option value="private_advertiser">Particuliere Adverteerder</option>
-                    <option value="business_advertiser">Zakelijke Adverteerder</option>
+                    <option value="1">Gebruiker</option>
+                    <option value="2">Particuliere Adverteerder</option>
+                    <option value="3">Zakelijke Adverteerder</option>
                 </select>
             </div>
 
