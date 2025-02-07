@@ -52,7 +52,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required|min:6',
+            'password' => 'required',
             'remember' => 'boolean',
         ]);
 
@@ -64,11 +64,17 @@ class AuthController extends Controller
             return redirect()->route('home');
         }
 
+        session()->flash('error', 'The provided credentials do not match our records.');
+
         return redirect()->back();
     }
 
     public function logout(Request $request)
     {
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+
         auth()->logout();
 
         $request->session()->invalidate();

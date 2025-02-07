@@ -4,10 +4,16 @@
 
 @section("content")
     <div class="col-12 col-md-6 col-lg-4">
+        <h1 class="mb-3">Login</h1>
+
+        @if (session()->has('error'))
+            <div class="alert alert-danger mb-3">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <form method="POST" action="{{ route('login') }}">
             @csrf
-
-            <h1 class="mb-3">Login</h1>
 
             <div class="form-group mb-3">
                 <label for="email" class="mb-1">E-mailadres</label>
