@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -15,7 +16,11 @@ class AuthController extends Controller
             return redirect()->route('home');
         }
 
-        return view("auth.register");
+        $roles = Role::all();
+
+        return view('auth.register', [
+            'roles' => $roles,
+        ]);
     }
 
     public function registerPost(Request $request)
@@ -25,12 +30,13 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:6',
             'password_confirmation' => 'required|same:password',
-            'role' => 'required',
+            'role' => 'required|exists:roles,id',
         ]);
 
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->role_id = $request->role;
         $user->password = Hash::make($request->password);
         $user->save();
 
@@ -45,7 +51,7 @@ class AuthController extends Controller
             return redirect()->route('home');
         }
 
-        return view("auth.login");
+        return view('auth.login');
     }
 
     public function loginPost(Request $request)

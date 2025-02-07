@@ -50,9 +50,12 @@
 
                 <select class="form-control" id="role" name="role" required>
                     <option value="">-- Selecteer een rol --</option>
-                    <option value="1">Gebruiker</option>
-                    <option value="2">Particuliere Adverteerder</option>
-                    <option value="3">Zakelijke Adverteerder</option>
+
+                    @foreach($roles as $role)
+                        <option value="{{ $role->id }}">
+                            {{ $role->name }}
+                        </option>
+                    @endforeach
                 </select>
 
                 @error("role")
