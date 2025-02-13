@@ -8,7 +8,7 @@
             @csrf
 
             <h1 class="mb-3">
-                {{  __('auth.register.register') }}
+                {{  __('auth.registration.register') }}
             </h1>
 
             <div class="form-group mb-3">
@@ -86,12 +86,12 @@
             </div>
 
             <button type="submit" class="btn btn-primary mb-3">
-                {{ __('auth.register.register') }}
+                {{ __('auth.registration.register') }}
             </button>
             <p class="text-muted">
-                {{ __('auth.register.already_account') }}
+                {{ __('auth.registration.already_account') }}
                 <a href="{{ route("login") }}">
-                    {{ __('auth.register.login') }}
+                    {{ __('auth.registration.login') }}
                 </a>
             </p>
         </form>
