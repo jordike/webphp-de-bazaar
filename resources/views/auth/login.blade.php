@@ -4,7 +4,9 @@
 
 @section("content")
     <div class="col-12 col-md-6 col-lg-4">
-        <h1 class="mb-3">Login</h1>
+        <h1 class="mb-3">
+            {{ __('auth.login.login') }}
+        </h1>
 
         @if (session()->has('error'))
             <div class="alert alert-danger mb-3">
@@ -16,7 +18,9 @@
             @csrf
 
             <div class="form-group mb-3">
-                <label for="email" class="mb-1">E-mailadres</label>
+                <label for="email" class="mb-1">
+                    {{ __('auth.fields.email') }}
+                </label>
                 <input type="email" class="form-control" id="email" name="email" required autofocus>
 
                 @error("email")
@@ -25,7 +29,9 @@
             </div>
 
             <div class="form-group mb-3">
-                <label for="password" class="mb-1">Wachtwoord</label>
+                <label for="password" class="mb-1">
+                    {{ __('auth.fields.password') }}
+                </label>
                 <input type="password" class="form-control" id="password" name="password" required>
 
                 @error("password")
@@ -35,11 +41,20 @@
 
             <div class="form-group form-check mb-3">
                 <input type="checkbox" class="form-check-input" id="remember" name="remember">
-                <label class="form-check-label" for="remember">Mij onthouden</label>
+                <label class="form-check-label" for="remember">
+                    {{ __('auth.fields.remember') }}
+                </label>
             </div>
 
-            <button type="submit" class="btn btn-primary mb-3">Inloggen</button>
-            <p class="text-muted">Nog geen account? <a href="{{ route("register") }}">Maak er hier een aan.</a></p>
+            <button type="submit" class="btn btn-primary mb-3">
+                {{ __('auth.login.login') }}
+            </button>
+            <p class="text-muted">
+                {{ __('auth.login.no_account') }}
+                <a href="{{ route("register") }}">
+                    {{ __('auth.login.create_account') }}
+                </a>
+            </p>
         </form>
     </div>
 @endsection

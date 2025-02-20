@@ -30,6 +30,17 @@
                     </ul>
 
                     <ul class="navbar-nav ms-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="locale-dropdown" role="button" data-bs-toggle="dropdown">
+                                {{ __('localization.' . session()->get('locale', 'en')) }}
+                            </a>
+
+                            <div id="locale-dropdown" class="dropdown-menu">
+                                <a class="dropdown-item" href="{{ route('locale.switch', 'en') }}">English</a>
+                                <a class="dropdown-item" href="{{ route('locale.switch', 'nl') }}">Nederlands</a>
+                            </div>
+                        </li>
+
                         @auth
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
