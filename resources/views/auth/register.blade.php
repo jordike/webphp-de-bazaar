@@ -4,8 +4,12 @@
 
 @section("content")
     <div class="col-12 col-md-6 col-lg-4">
-        <form method="POST" action="{{ route('register') }}">
+        <form method="POST" action="{{ route('register.post') }}">
             @csrf
+
+            @isset($companyId)
+                <input type="hidden" name="companyId" value="{{ $companyId }}" />
+            @endisset
 
             <h1 class="mb-3">
                 {{  __('auth.registration.register') }}
