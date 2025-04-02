@@ -13,7 +13,9 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
             <div class="container">
-                <a class="navbar-brand" href="#">{{ env('APP_NAME') }}</a>
+                <a class="navbar-brand" href="{{ route('home') }}">
+                    {{ env('APP_NAME') }}
+                </a>
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
@@ -22,10 +24,14 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('home') }}">Home</a>
+                            <a class="nav-link" href="{{ route('home') }}">
+                                {{ __('layout.nav.home') }}
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Advertisements</a>
+                            <a class="nav-link" href="{{ route('advertisement.index') }}">
+                                {{ __('layout.nav.advertisements') }}
+                            </a>
                         </li>
                     </ul>
 
@@ -48,7 +54,12 @@
                                 </a>
 
                                 <div id="profile-dropdown" class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#">Profile</a>
+                                    <a class="dropdown-item" href="#">
+                                        {{ __('layout.profile-dropdown.profile') }}
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('company.index') }}">
+                                        {{ __('layout.profile-dropdown.company') }}
+                                    </a>
 
                                     <div class="dropdown-divider"></div>
 
@@ -56,15 +67,21 @@
                                         @csrf
                                     </form>
 
-                                    <button class="dropdown-item" type="submit" form="logout-form">Logout</button>
+                                    <button class="dropdown-item" type="submit" form="logout-form">
+                                        {{ __('layout.profile-dropdown.logout') }}
+                                    </button>
                                 </div>
                             </li>
                         @else
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">Login</a>
+                                <a class="nav-link" href="{{ route('login') }}">
+                                    {{ __('auth.login.login') }}
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">Register</a>
+                                <a class="nav-link" href="{{ route('register') }}">
+                                    {{ __('auth.registration.register') }}
+                                </a>
                             </li>
                         @endauth
                     </ul>

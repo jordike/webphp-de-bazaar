@@ -12,11 +12,7 @@ class AuthController extends Controller
 {
     public function register()
     {
-        if (auth()->check()) {
-            return redirect()->route('home');
-        }
-
-        $roles = Role::all();
+        $roles = Role::where('selectable', true)->get();
 
         return view('auth.register', [
             'roles' => $roles,
@@ -47,10 +43,6 @@ class AuthController extends Controller
 
     public function login()
     {
-        if (auth()->check()) {
-            return redirect()->route('home');
-        }
-
         return view('auth.login');
     }
 
@@ -64,23 +56,19 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
 
-        if (auth()->attempt($credentials, $request->remember)) {
-            $request->session()->regenerate();
+        if (!auth()->attempt($credentials, $request->remember)) {
+            session()->flash('error', 'The provided credentials do not match our records.');
 
-            return redirect()->route('home');
+            return redirect()->back();
         }
 
-        session()->flash('error', 'The provided credentials do not match our records.');
+        $request->session()->regenerate();
 
-        return redirect()->back();
+        return redirect()->route('home');
     }
 
     public function logout(Request $request)
     {
-        if (!auth()->check()) {
-            return redirect()->route('login');
-        }
-
         auth()->logout();
 
         $request->session()->invalidate();

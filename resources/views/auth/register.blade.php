@@ -11,6 +11,8 @@
                 {{  __('auth.registration.register') }}
             </h1>
 
+            <x-error-message />
+
             <div class="form-group mb-3">
                 <label for="name" class="mb-1">
                     {{ __('auth.fields.name') }}
