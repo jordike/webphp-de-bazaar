@@ -10,7 +10,7 @@
 
         <x-error-message />
 
-        <form method="POST" action="{{ route('login') }}">
+        <form method="POST" action="{{ route('login.post') }}">
             @csrf
 
             <div class="form-group mb-3">

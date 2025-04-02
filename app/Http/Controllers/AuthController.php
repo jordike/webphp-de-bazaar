@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -10,12 +11,13 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function register()
+    public function register(?Company $company = null)
     {
         $roles = Role::where('selectable', true)->get();
 
         return view('auth.register', [
             'roles' => $roles,
+            'companyId' => optional($company)->id,
         ]);
     }
 
@@ -34,6 +36,7 @@ class AuthController extends Controller
         $user->email = $request->email;
         $user->role_id = $request->role;
         $user->password = Hash::make($request->password);
+        $user->company_id = $request->get('companyId');
         $user->save();
 
         auth()->login($user);
