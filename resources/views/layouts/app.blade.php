@@ -29,7 +29,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('advertisements.index') }}">
+                            <a class="nav-link" href="{{ route('advertisement.index') }}">
                                 {{ __('layout.nav.advertisements') }}
                             </a>
                         </li>
