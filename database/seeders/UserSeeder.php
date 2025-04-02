@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\RoleEnum;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -17,25 +18,25 @@ class UserSeeder extends Seeder
             [
                 'name' => 'John Doe',
                 'email' => 'john.doe@debazaar.nl',
-                'role_id' => 1, // Standaard
+                'role_id' => RoleEnum::STANDARD,
                 'password' => 'Password123',
             ],
             [
                 'name' => 'Jane Smith',
                 'email' => 'jane.smith@debazaar.nl',
-                'role_id' => 2, // Particuliere adverteerder
+                'role_id' => RoleEnum::PRIVATE_ADVERTISER,
                 'password' => 'Password456',
             ],
             [
                 'name' => 'Alice Johnson',
                 'email' => 'alice.johnson@debazaar.nl',
-                'role_id' => 3, // Zakelijke adverteerder
+                'role_id' => RoleEnum::BUSINESS_ADVERTISER,
                 'password' => 'Password789',
             ],
             [
                 'name' => 'Admin',
                 'email' => 'admin@debazaar.nl',
-                'role_id' => 4, // Platform eigenaar
+                'role_id' => RoleEnum::PLATFORM_OWNER,
                 'password' => 'AdminPassword123',
             ]
         ];

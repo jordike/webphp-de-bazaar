@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\RoleEnum;
 use App\Models\Role;
 use Illuminate\Database\Seeder;
 
@@ -14,18 +15,22 @@ class RoleSeeder extends Seeder
     {
         $roles = [
             [
+                'id' => RoleEnum::STANDARD,
                 'name' => 'Standaard',
                 'selectable' => true
             ],
             [
+                'id' => RoleEnum::PRIVATE_ADVERTISER,
                 'name' => 'Particuliere adverteerder',
                 'selectable' => true
             ],
             [
+                'id' => RoleEnum::BUSINESS_ADVERTISER,
                 'name' => 'Zakelijke adverteerder',
                 'selectable' => true
             ],
             [
+                'id' => RoleEnum::PLATFORM_OWNER,
                 'name' => 'Platform eigenaar',
                 'selectable' => false
             ]
@@ -33,8 +38,11 @@ class RoleSeeder extends Seeder
 
         foreach ($roles as $role) {
             Role::updateOrCreate(
-                [ 'name' => $role['name'] ],
-                [ 'selectable' => $role['selectable'] ]
+                [ 'id' => $role['id'] ],
+                [
+                    'name' => $role['name'],
+                    'selectable' => $role['selectable']
+                ]
             );
         }
     }

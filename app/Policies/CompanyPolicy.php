@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
+use App\Enums\RoleEnum;
 use App\Models\User;
-use RoleEnum;
 
 class CompanyPolicy
 {
