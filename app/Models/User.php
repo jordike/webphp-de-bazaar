@@ -50,4 +50,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Role::class);
     }
+
+    public function company()
+    {
+        return $this->hasOne(Company::class);
+    }
 }
