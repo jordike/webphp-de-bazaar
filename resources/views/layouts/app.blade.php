@@ -33,6 +33,16 @@
                                 {{ __('layout.nav.advertisements') }}
                             </a>
                         </li>
+
+                        @auth
+                            @if (auth()->user()->isAdmin())
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('company.index') }}">
+                                        {{ __('layout.nav.companies') }}
+                                    </a>
+                                </li>
+                            @endif
+                        @endauth
                     </ul>
 
                     <ul class="navbar-nav ms-auto">
@@ -57,9 +67,12 @@
                                     <a class="dropdown-item" href="#">
                                         {{ __('layout.profile-dropdown.profile') }}
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('company.index') }}">
-                                        {{ __('layout.profile-dropdown.company') }}
-                                    </a>
+
+                                    @if (Gate::allows('update', auth()->user()->company))
+                                        <a class="dropdown-item" href="{{ route('company.show', auth()->user()->company_id) }}">
+                                            {{ __('layout.profile-dropdown.company') }}
+                                        </a>
+                                    @endif
 
                                     <div class="dropdown-divider"></div>
 

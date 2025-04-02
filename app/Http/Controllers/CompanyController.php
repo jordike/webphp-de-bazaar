@@ -14,7 +14,13 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        //
+        Gate::authorize('viewAll', Company::class);
+
+        $companies = Company::all();
+
+        return view('company.index', [
+            'companies' => $companies,
+        ]);
     }
 
     /**
@@ -42,7 +48,11 @@ class CompanyController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $company = Company::findOrFail($id);
+
+        return view('company.show', [
+            'company' => $company,
+        ]);
     }
 
     /**
