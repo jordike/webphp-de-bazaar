@@ -40,10 +40,6 @@ class AuthController extends Controller
 
         auth()->login($user);
 
-        if (Gate::allows('create', Company::class)) {
-            return redirect()->route('company.create');
-        }
-
         return redirect()->route('login');
     }
 
