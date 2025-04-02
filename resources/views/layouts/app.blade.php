@@ -80,7 +80,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('register') }}">
-                                    {{ __('auth.register.register') }}
+                                    {{ __('auth.registration.register') }}
                                 </a>
                             </li>
                         @endauth
