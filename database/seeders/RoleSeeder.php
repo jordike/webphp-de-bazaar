@@ -13,14 +13,29 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         $roles = [
-            'Particulier',
-            'Zakelijk',
+            [
+                'name' => 'Standaard',
+                'selectable' => true
+            ],
+            [
+                'name' => 'Particuliere adverteerder',
+                'selectable' => true
+            ],
+            [
+                'name' => 'Zakelijke adverteerder',
+                'selectable' => true
+            ],
+            [
+                'name' => 'Platform eigenaar',
+                'selectable' => false
+            ]
         ];
 
         foreach ($roles as $role) {
-            Role::updateOrCreate([
-                'name' => $role
-            ]);
+            Role::updateOrCreate(
+                [ 'name' => $role['name'] ],
+                [ 'selectable' => $role['selectable'] ]
+            );
         }
     }
 }

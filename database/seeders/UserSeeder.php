@@ -17,14 +17,26 @@ class UserSeeder extends Seeder
             [
                 'name' => 'John Doe',
                 'email' => 'john.doe@debazaar.nl',
-                'role_id' => 1,
+                'role_id' => 1, // Standaard
                 'password' => 'Password123',
             ],
             [
                 'name' => 'Jane Smith',
                 'email' => 'jane.smith@debazaar.nl',
-                'role_id' => 2,
+                'role_id' => 2, // Particuliere adverteerder
                 'password' => 'Password456',
+            ],
+            [
+                'name' => 'Alice Johnson',
+                'email' => 'alice.johnson@debazaar.nl',
+                'role_id' => 3, // Zakelijke adverteerder
+                'password' => 'Password789',
+            ],
+            [
+                'name' => 'Admin',
+                'email' => 'admin@debazaar.nl',
+                'role_id' => 4, // Platform eigenaar
+                'password' => 'AdminPassword123',
             ]
         ];
 
