@@ -8,11 +8,7 @@
             {{ __('auth.login.login') }}
         </h1>
 
-        @if (session()->has('error'))
-            <div class="alert alert-danger mb-3">
-                {{ session('error') }}
-            </div>
-        @endif
+        <x-error-message />
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
