@@ -16,7 +16,7 @@ class AuthController extends Controller
             return redirect()->route('home');
         }
 
-        $roles = Role::all();
+        $roles = Role::where('selectable', true)->get();
 
         return view('auth.register', [
             'roles' => $roles,
