@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\LocaleController;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,7 @@ Route::middleware('guest')->group(function() {
 Route::middleware('auth')->group(function () {
     Route::resource('advertisement', AdvertisementController::class)->names('advertisement');
     Route::resource('company', CompanyController::class)->names('company');
+    Route::resource('companies', CompaniesController::class)->names('companies');
 
     Route::post('/logout', [ AuthController::class, 'logout' ])->name('logout');
 });

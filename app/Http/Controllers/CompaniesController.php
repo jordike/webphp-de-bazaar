@@ -5,21 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
-class CompanyController extends Controller
+class CompaniesController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        Gate::authorize('viewAll', Company::class);
-
         $companies = Company::all();
 
-        return view('company.index', [
-            'companies' => $companies,
+        return view('companies.index', [
+            'companies' => $companies
         ]);
     }
 
@@ -28,9 +25,7 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        Gate::authorize('create', Company::class);
-
-        return view('company.create');
+        //
     }
 
     /**
@@ -38,9 +33,7 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('create', Company::class);
-
-        return redirect()->route('company.index');
+        //
     }
 
     /**
@@ -56,7 +49,11 @@ class CompanyController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $company = Company::findOrFail($id);
+
+        return view('companies.show', [
+            'company' => $company
+        ]);
     }
 
     /**

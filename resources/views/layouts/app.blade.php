@@ -37,7 +37,7 @@
                         @auth
                             @if (auth()->user()->isAdmin())
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('company.index') }}">
+                                    <a class="nav-link" href="{{ route('companies.index') }}">
                                         {{ __('layout.nav.companies') }}
                                     </a>
                                 </li>
