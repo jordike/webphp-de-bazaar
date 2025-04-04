@@ -50,9 +50,11 @@ class CompaniesController extends Controller
     public function edit(string $id)
     {
         $company = Company::findOrFail($id);
+        $contracts = $company->contracts()->paginate(10);
 
         return view('companies.edit', [
-            'company' => $company
+            'company' => $company,
+            'contracts' => $contracts
         ]);
     }
 
