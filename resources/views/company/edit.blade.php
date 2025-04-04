@@ -181,3 +181,7 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('js/deleteConfirmation.js') }}"></script>
+@endpush

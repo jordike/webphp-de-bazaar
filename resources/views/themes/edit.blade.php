@@ -92,8 +92,9 @@
             </div>
 
             <div class="form-group mb-3">
-                <label for="font_size" class="mb-1 fw-bold">
-                    Font Size
+                <label for="font_size" class="mb-1">
+                    <span class="fw-bold">Font Size</span>
+                    <span class="text-muted small">(in pixels)</span>
                 </label>
                 <input type="text" class="form-control" id="font_size" name="font_size" placeholder="e.g., 16px" value="{{ old('font_size', $theme->font_size) }}">
 
