@@ -69,11 +69,15 @@
                                         {{ __('layout.profile-dropdown.profile') }}
                                     </a>
 
-                                    @if (Gate::allows('update', auth()->user()->company))
-                                        <a class="dropdown-item" href="{{ route('company.show', auth()->user()->company_id) }}">
+                                    @isset (auth()->user()->company_id)
+                                        <a class="dropdown-item" href="{{ route('company.edit', auth()->user()->company) }}">
                                             {{ __('layout.profile-dropdown.company') }}
                                         </a>
-                                    @endif
+                                    @else
+                                        <a class="dropdown-item" href="{{ route('company.create') }}">
+                                            {{ __('layout.profile-dropdown.create-company') }}
+                                        </a>
+                                    @endisset
 
                                     <div class="dropdown-divider"></div>
 

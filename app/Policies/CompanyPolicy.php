@@ -16,11 +16,6 @@ class CompanyPolicy
         //
     }
 
-    public function viewAll(User $user)
-    {
-        return $user->isAdmin();
-    }
-
     public function create(User $user)
     {
         // "Zakelijke adverteerder" or "Platform eigenaar" can create a company

@@ -8,31 +8,32 @@ use App\Http\Controllers\ContractController;
 use App\Http\Controllers\LocaleController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('guest')->group(function() {
-    Route::controller(AuthController::class)->group(function() {
-        Route::get('/login', 'login')->name('login');
-        Route::post('/login', 'loginPost')->name('login.post');
+Route::middleware('guest')->controller(AuthController::class)->group(function () {
+    Route::get('/login', 'login')->name('login');
+    Route::post('/login', 'loginPost')->name('login.post');
 
-        Route::get('/register', 'register')->name('register');
-        Route::post('/register', 'registerPost')->name('register.post');
+    Route::get('/register', 'register')->name('register');
+    Route::post('/register', 'registerPost')->name('register.post');
 
-        Route::get('/{company:name}/register', 'register')->name('company.register');
-        Route::post('/{company:name}/register', 'registerPost')->name('company.register.post');
-    });
+    Route::get('/{company:name}/register', 'register')->name('company.register');
+    Route::post('/{company:name}/register', 'registerPost')->name('company.register.post');
 });
 
 Route::middleware('auth')->group(function () {
     Route::resource('advertisement', AdvertisementController::class)->names('advertisement');
     Route::resource('company', CompanyController::class)->names('company');
+
     Route::resource('companies', CompaniesController::class)->names('companies');
     Route::resource('companies.contracts', ContractController::class)->names('contracts');
     Route::get('companies/{company}/contracts/{contract}/download', [ContractController::class, 'download'])->name('contracts.download');
 
-    Route::post('/logout', [ AuthController::class, 'logout' ])->name('logout');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
-Route::get('/locale/{locale}', LocaleController::class)->name('locale.switch');
+Route::get('/locale/{locale}', [LocaleController::class, '__invoke'])->name('locale.switch');
 
-Route::get('/', function () {
-    return view('index');
-})->name('home');
+Route::view('/', 'home')->name('home');
+
+Route::prefix('{company:name}')->group(function () {
+    Route::get('/', [CompanyController::class, 'show'])->name('company.landing-page');
+});
