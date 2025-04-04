@@ -84,7 +84,7 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h2>Themes</h2>
 
-                <a href="{{ route('theme.create', $company) }}" class="btn btn-primary">Add Theme</a>
+                <a href="{{ route('theme.create', $company) }}" class="btn btn-outline-primary">Add Theme</a>
             </div>
 
             @if ($company->themes->isEmpty())
@@ -100,11 +100,13 @@
                                     {{ $theme->name }}
                                 </button>
                             </h2>
+
                             <div id="collapse{{ $theme->id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ $theme->id }}" data-bs-parent="#themesAccordion">
                                 <div class="accordion-body">
                                     <div class="mb-3">
                                         <p><strong>Description:</strong> {{ $theme->description }}</p>
                                     </div>
+
                                     <div class="mb-3">
                                         <p><strong>Primary Color:</strong>
                                             <span class="badge" style="background-color: {{ $theme->primary_color }}; color: #fff;">
@@ -112,6 +114,7 @@
                                             </span>
                                         </p>
                                     </div>
+
                                     <div class="mb-3">
                                         <p><strong>Secondary Color:</strong>
                                             <span class="badge" style="background-color: {{ $theme->secondary_color }}; color: #fff;">
@@ -119,6 +122,7 @@
                                             </span>
                                         </p>
                                     </div>
+
                                     <div class="mb-3">
                                         <p><strong>Background Color:</strong>
                                             <span class="badge" style="background-color: {{ $theme->background_color }}; color: #fff;">
@@ -126,6 +130,7 @@
                                             </span>
                                         </p>
                                     </div>
+
                                     <div class="mb-3">
                                         <p><strong>Text Color:</strong>
                                             <span class="badge" style="background-color: {{ $theme->text_color }}; color: #fff;">
@@ -133,12 +138,15 @@
                                             </span>
                                         </p>
                                     </div>
+
                                     <div class="mb-3">
                                         <p><strong>Font Family:</strong> <span style="font-family: {{ $theme->font_family }};">{{ $theme->font_family }}</span></p>
                                     </div>
+
                                     <div class="mb-3">
                                         <p><strong>Font Size:</strong> <span style="font-size: {{ $theme->font_size }}px;">{{ $theme->font_size }}px</span></p>
                                     </div>
+
                                     @if ($theme->logo_path)
                                         <div class="mb-3">
                                             <p><strong>Logo:</strong></p>
@@ -152,12 +160,14 @@
                                         <form action="{{ route('theme.destroy', [$company, $theme]) }}" method="POST" class="ms-2 delete-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-outline-danger btn-sm delete-button" onclick="return confirm('Are you sure you want to delete this theme?')">Delete</button>
+
+                                            <button type="submit" class="btn btn-outline-danger btn-sm delete-button">Delete</button>
                                         </form>
 
                                         @if ($company->current_theme_id != $theme->id)
                                             <form action="{{ route('theme.use', [$company, $theme]) }}" method="POST" class="ms-2">
                                                 @csrf
+
                                                 <button type="submit" class="btn btn-outline-success btn-sm">Use</button>
                                             </form>
                                         @endif
