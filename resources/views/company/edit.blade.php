@@ -84,35 +84,90 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h2>Themes</h2>
 
-                <a href="{{ route('themes.create', $company) }}" class="btn btn-primary">Add Theme</a>
+                <a href="{{ route('theme.create', $company) }}" class="btn btn-primary">Add Theme</a>
             </div>
 
-            <div class="accordion" id="themesAccordion">
-                @foreach ($company->themes as $theme)
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="heading{{ $theme->id }}">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $theme->id }}" aria-expanded="false" aria-controls="collapse{{ $theme->id }}">
-                                {{ $theme->name }}
-                            </button>
-                        </h2>
-                        <div id="collapse{{ $theme->id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ $theme->id }}" data-bs-parent="#themesAccordion">
-                            <div class="accordion-body">
-                                <p><strong>Description:</strong> {{ $theme->description }}</p>
-                                <p><strong>Primary Color:</strong> <span style="color: {{ $theme->primary_color }}">{{ $theme->primary_color }}</span></p>
-                                <p><strong>Secondary Color:</strong> <span style="color: {{ $theme->secondary_color }}">{{ $theme->secondary_color }}</span></p>
-                                <p><strong>Background Color:</strong> <span style="color: {{ $theme->background_color }}">{{ $theme->background_color }}</span></p>
-                                <p><strong>Text Color:</strong> <span style="color: {{ $theme->text_color }}">{{ $theme->text_color }}</span></p>
-                                <p><strong>Font Family:</strong> {{ $theme->font_family }}</p>
-                                <p><strong>Font Size:</strong> {{ $theme->font_size }}</p>
-                                @if ($theme->logo_path)
-                                    <p><strong>Logo:</strong></p>
-                                    <img src="{{ $theme->getLogoPath() }}" alt="Logo" class="img-fluid">
-                                @endif
+            @if ($company->themes->isEmpty())
+                <div class="alert alert-info" role="alert">
+                    No themes available. Please add a theme.
+                </div>
+            @else
+                <div class="accordion" id="themesAccordion">
+                    @foreach ($company->themes as $theme)
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading{{ $theme->id }}">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $theme->id }}" aria-expanded="false" aria-controls="collapse{{ $theme->id }}">
+                                    {{ $theme->name }}
+                                </button>
+                            </h2>
+                            <div id="collapse{{ $theme->id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ $theme->id }}" data-bs-parent="#themesAccordion">
+                                <div class="accordion-body">
+                                    <div class="mb-3">
+                                        <p><strong>Description:</strong> {{ $theme->description }}</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <p><strong>Primary Color:</strong>
+                                            <span class="badge" style="background-color: {{ $theme->primary_color }}; color: #fff;">
+                                                {{ $theme->primary_color }}
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <p><strong>Secondary Color:</strong>
+                                            <span class="badge" style="background-color: {{ $theme->secondary_color }}; color: #fff;">
+                                                {{ $theme->secondary_color }}
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <p><strong>Background Color:</strong>
+                                            <span class="badge" style="background-color: {{ $theme->background_color }}; color: #fff;">
+                                                {{ $theme->background_color }}
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <p><strong>Text Color:</strong>
+                                            <span class="badge" style="background-color: {{ $theme->text_color }}; color: #fff;">
+                                                {{ $theme->text_color }}
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <p><strong>Font Family:</strong> <span style="font-family: {{ $theme->font_family }};">{{ $theme->font_family }}</span></p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <p><strong>Font Size:</strong> <span style="font-size: {{ $theme->font_size }}px;">{{ $theme->font_size }}px</span></p>
+                                    </div>
+                                    @if ($theme->logo_path)
+                                        <div class="mb-3">
+                                            <p><strong>Logo:</strong></p>
+                                            <img src="{{ $theme->getLogoPath() }}" alt="Logo" class="img-fluid rounded shadow-sm">
+                                        </div>
+                                    @endif
+
+                                    <div class="d-flex justify-content-end">
+                                        <a href="{{ route('theme.edit', [$company, $theme]) }}" class="btn btn-outline-secondary btn-sm">Edit</a>
+
+                                        <form action="{{ route('theme.destroy', [$company, $theme]) }}" method="POST" class="ms-2 delete-form">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-outline-danger btn-sm delete-button" onclick="return confirm('Are you sure you want to delete this theme?')">Delete</button>
+                                        </form>
+
+                                        @if ($company->current_theme_id != $theme->id)
+                                            <form action="{{ route('theme.use', [$company, $theme]) }}" method="POST" class="ms-2">
+                                                @csrf
+                                                <button type="submit" class="btn btn-outline-success btn-sm">Use</button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
-            </div>
+                    @endforeach
+                </div>
+            @endif
         </div>
     </div>
 @endsection

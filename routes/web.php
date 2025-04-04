@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('company', CompanyController::class)->names('company');
     Route::resource('company.theme', ThemeController::class)->names('theme');
+    Route::post('company/{company}/theme/{theme}/use', [ThemeController::class, 'use'])->name('theme.use');
 
     Route::resource('companies', CompaniesController::class)->names('companies');
     Route::resource('companies.contracts', ContractController::class)->names('contracts');
