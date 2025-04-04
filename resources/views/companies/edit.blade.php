@@ -82,7 +82,11 @@
                         @foreach ($contracts as $contract)
                             <tr>
                                 <td>{{ $contract->id }}</td>
-                                <td>{{ $contract->is_signed ? 'Yes' : 'No' }}</td>
+                                <td>
+                                    <span class="{{ $contract->is_signed ? 'text-success' : 'text-danger' }}">
+                                        <strong>{{ $contract->is_signed ? 'Yes' : 'No' }}</strong>
+                                    </span>
+                                </td>
                                 <td>{{ $contract->start_date->format('d-m-Y') }}</td>
                                 <td>{{ $contract->end_date->format('d-m-Y') }}</td>
                                 <td>
