@@ -10,6 +10,14 @@ class Contract extends Model
         'company_id',
         'is_signed',
         'pdf_path',
+        'start_date',
+        'end_date',
+    ];
+
+    protected $casts = [
+        'is_signed' => 'boolean',
+        'start_date' => 'date',
+        'end_date' => 'date',
     ];
 
     public function company()
