@@ -6,6 +6,8 @@
     <div class="container">
         <h1>Edit Company</h1>
 
+        <x-status-messages />
+
         <form action="{{ route('companies.update', $company->id) }}" method="POST">
             @csrf
             @method('PUT')

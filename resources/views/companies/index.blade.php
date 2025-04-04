@@ -3,13 +3,9 @@
 @section('title', 'Manage companies')
 
 @section('content')
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1>Companies</h1>
+    <h1>Companies</h1>
 
-        <div class="mb-3">
-            <a href="{{ route('company.create') }}" class="btn btn-primary">Create Company</a>
-        </div>
-    </div>
+    <x-status-messages />
 
     @if($companies->isEmpty())
         <p>No companies available.</p>
