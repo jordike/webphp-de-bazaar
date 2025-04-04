@@ -6,6 +6,7 @@ use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\ThemeController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->controller(AuthController::class)->group(function () {
@@ -21,7 +22,9 @@ Route::middleware('guest')->controller(AuthController::class)->group(function ()
 
 Route::middleware('auth')->group(function () {
     Route::resource('advertisement', AdvertisementController::class)->names('advertisement');
+
     Route::resource('company', CompanyController::class)->names('company');
+    Route::resource('company.theme', ThemeController::class)->names('theme');
 
     Route::resource('companies', CompaniesController::class)->names('companies');
     Route::resource('companies.contracts', ContractController::class)->names('contracts');

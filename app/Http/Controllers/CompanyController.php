@@ -70,7 +70,13 @@ class CompanyController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $company = Company::findOrFail($id);
+
+        Gate::authorize('update', $company);
+
+        return view('company.edit', [
+            'company' => $company,
+        ]);
     }
 
     /**
@@ -78,7 +84,27 @@ class CompanyController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $company = Company::findOrFail($id);
+
+        Gate::authorize('update', $company);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+        ]);
+
+        $company->name = $request->input('name');
+        $company->email = $request->input('email');
+        $company->phone = $request->input('phone');
+        $company->address = $request->input('address');
+        $company->city = $request->input('city');
+        $company->save();
+
+        return redirect()->route('company.edit', $company)
+            ->with('success', 'Company updated successfully.');
     }
 
     /**

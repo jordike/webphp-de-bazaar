@@ -25,4 +25,14 @@ class Company extends Model
     {
         return $this->hasMany(Contract::class);
     }
+
+    public function themes()
+    {
+        return $this->hasMany(Theme::class);
+    }
+
+    public function currentTheme()
+    {
+        return $this->belongsTo(Theme::class, 'current_theme_id');
+    }
 }
