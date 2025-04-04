@@ -11,29 +11,43 @@
         </div>
     </div>
 
-    <div class="d-flex flex-row flex-wrap gap-3">
-        @foreach ($companies as $company)
-            <div class="card">
-                <div class="card-header">
-                    {{ $company->name }}
-                </div>
+    @if($companies->isEmpty())
+        <p>No companies available.</p>
+    @else
+        <table class="table table-striped table-responsive table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($companies as $company)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $company->name }}</td>
+                        <td>{{ $company->email }}</td>
+                        <td>
+                            <a href="{{ route('companies.edit', $company->id) }}" class="btn btn-secondary btn-sm">Edit</a>
 
-                <div class="card-body">
-                    <p class="card-text">Email: {{ $company->email }}</p>
-                    <p class="card-text">Phone: {{ $company->phone }}</p>
-                    <p class="card-text">Address: {{ $company->address }}</p>
-                </div>
+                            <form action="{{ route('companies.destroy', $company->id) }}" method="POST" class="d-inline delete-form">
+                                @csrf
+                                @method('DELETE')
 
-                <div class="card-footer">
-                    <a href="{{ route('company.edit', $company->id) }}" class="btn btn-secondary">Edit</a>
+                                <button type="submit" class="btn btn-danger btn-sm delete-button">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
 
-                    <form action="{{ route('company.destroy', $company->id) }}" method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
-                </div>
-            </div>
-        @endforeach
-    </div>
+        {{ $companies->links() }}
+    @endif
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('js/deleteConfirmation.js') }}"></script>
+@endpush

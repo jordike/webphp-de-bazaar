@@ -13,7 +13,7 @@ class CompaniesController extends Controller
      */
     public function index()
     {
-        $companies = Company::all();
+        $companies = Company::paginate(10);
 
         return view('companies.index', [
             'companies' => $companies
@@ -51,7 +51,7 @@ class CompaniesController extends Controller
     {
         $company = Company::findOrFail($id);
 
-        return view('companies.show', [
+        return view('companies.edit', [
             'company' => $company
         ]);
     }
@@ -69,6 +69,10 @@ class CompaniesController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $company = Company::findOrFail($id);
+        $company->delete();
+
+        return redirect()->route('companies.index')
+            ->with('success', 'Company deleted successfully.');
     }
 }
