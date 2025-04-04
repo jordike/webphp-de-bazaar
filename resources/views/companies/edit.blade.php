@@ -23,13 +23,18 @@
             </div>
 
             <div class="form-group mb-3">
+                <label for="phone" class="mb-1">Phone</label>
+                <input type="text" name="phone" id="phone" class="form-control" value="{{ old('phone', $company->phone) }}" required>
+            </div>
+
+            <div class="form-group mb-3">
                 <label for="address" class="mb-1">Address</label>
                 <input type="text" name="address" id="address" class="form-control" value="{{ old('address', $company->address) }}" required>
             </div>
 
             <div class="form-group mb-3">
-                <label for="phone" class="mb-1">Phone</label>
-                <input type="text" name="phone" id="phone" class="form-control" value="{{ old('phone', $company->phone) }}" required>
+                <label for="city" class="mb-1">City</label>
+                <input type="text" name="city" id="city" class="form-control" value="{{ old('city', $company->city) }}" required>
             </div>
 
             <button type="submit" class="btn btn-primary">Update Company</button>

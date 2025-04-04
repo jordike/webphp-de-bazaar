@@ -61,7 +61,19 @@ class CompaniesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:100',
+        ]);
+
+        $company = Company::findOrFail($id);
+        $company->update($request->only(['name', 'email', 'phone', 'address', 'city']));
+
+        return redirect()->route('companies.index')
+            ->with('success', 'Company updated successfully.');
     }
 
     /**
