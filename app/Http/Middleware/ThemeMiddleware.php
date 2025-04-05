@@ -18,18 +18,22 @@ class ThemeMiddleware
     {
         $company = $request->route('company');
 
-        if (is_int($company)) {
+        if (is_string($company)) {
             $company = Company::find($company);
         }
 
         if (!$company) {
+            session()->forget('theme');
+
             return $next($request);
         }
 
         $theme = $company->currentTheme ?? null;
 
-        if ($theme) {
+        if (isset($theme)) {
             session()->put('theme', $theme);
+        } else {
+            session()->forget('theme');
         }
 
         return $next($request);
