@@ -22,6 +22,10 @@ class ThemeMiddleware
             $company = Company::find($company);
         }
 
+        if (!$company) {
+            return $next($request);
+        }
+
         $theme = $company->currentTheme ?? null;
 
         if ($theme) {
