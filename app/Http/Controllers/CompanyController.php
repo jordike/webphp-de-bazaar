@@ -123,25 +123,15 @@ class CompanyController extends Controller
     {
         Gate::authorize('update', $company);
 
-        $rules = [
-            'type' => 'required|in:text,image,highlighted_advertisements',
-        ];
-
-        if ($request->input('type') === 'text') {
-            $rules['content'] = 'required|string';
-        } elseif ($request->input('type') === 'image') {
-            $rules['image'] = 'required|file|mimes:jpeg,png,jpg,gif|max:2048';
-        }
-
-        $request->validate($rules);
+        $this->validateLandingPageComponent($request);
 
         $component = new LandingPageComponent();
         $component->company_id = $company->id;
         $component->type = $request->input('type');
 
-        if ($request->input('type') === 'highlighted_advertisements') {
+        if ($request->input('type') === LandingPageComponent::TYPE_HIGHLIGHTED_ADVERTISEMENTS) {
             $component->content = null; // No content is required for highlighted advertisements
-        } elseif ($request->input('type') === 'image' && $request->hasFile('image')) {
+        } elseif ($request->input('type') === LandingPageComponent::TYPE_IMAGE && $request->hasFile('image')) {
             $path = $request->file('image')->store('landing_page_images', 'public');
             $component->content = $path;
         } else {
@@ -153,6 +143,24 @@ class CompanyController extends Controller
 
         return redirect()->route('company.edit', $company)
             ->with('success', 'Landing page component added successfully.');
+    }
+
+    /**
+     * Validate the request for adding a landing page component.
+     */
+    private function validateLandingPageComponent(Request $request): void
+    {
+        $rules = [
+            'type' => 'required|in:' . implode(',', LandingPageComponent::getAllowedTypes()),
+        ];
+
+        if ($request->input('type') === LandingPageComponent::TYPE_TEXT) {
+            $rules['content'] = 'required|string';
+        } elseif ($request->input('type') === LandingPageComponent::TYPE_IMAGE) {
+            $rules['image'] = 'required|file|mimes:jpeg,png,jpg,gif|max:2048';
+        }
+
+        $request->validate($rules);
     }
 
     /**
