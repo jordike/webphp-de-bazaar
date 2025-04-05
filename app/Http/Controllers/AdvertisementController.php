@@ -53,6 +53,14 @@ class AdvertisementController extends Controller
         // TODO: Ensure user is authenticated (check if user is logged in)
         $userId = Auth::id(); // Get the authenticated user's ID
 
+        $adCount = Advertisement::where('user_id', $userId)
+                            ->where('is_for_rent', $request->is_for_rent)
+                            ->count();
+
+        if ($adCount >= 4) {
+            return redirect()->back()->with('error', 'You can only create up to 4 advertisements in this category.');
+        }
+
         // Handle photo upload if it exists
         $photoPath = null;
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
@@ -97,6 +105,16 @@ class AdvertisementController extends Controller
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
     
+        $userId = Auth::id();
+
+        $adCount = Advertisement::where('user_id', $userId)
+        ->where('is_for_rent', $request->is_for_rent)
+        ->count();
+
+        if ($adCount >= 4) {
+        return redirect()->back()->with('error', 'You can only create up to 4 advertisements in this category.');
+        }
+
         // Update the advertisement with validated data
         $advertisement->update($validated);
     

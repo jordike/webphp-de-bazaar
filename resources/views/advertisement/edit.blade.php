@@ -3,6 +3,12 @@
 @section('title', 'Edit Advertisement')
 
 @section('content')
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+    
     <div class="container">
         <div class=" text-center mt-5 ">
             <h1>Edit Your Advertisement</h1>
