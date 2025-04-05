@@ -164,11 +164,17 @@
                                             <button type="submit" class="btn btn-outline-danger btn-sm delete-button">Delete</button>
                                         </form>
 
-                                        @if ($company->current_theme_id != $theme->id)
+                                        @if ($company->current_theme_id !== $theme->id)
                                             <form action="{{ route('theme.use', [$company, $theme]) }}" method="POST" class="ms-2">
                                                 @csrf
 
                                                 <button type="submit" class="btn btn-outline-success btn-sm">Use</button>
+                                            </form>
+                                        @else
+                                            <form action="{{ route('theme.unuse', [$company, $theme]) }}" method="POST" class="ms-2">
+                                                @csrf
+
+                                                <button type="submit" class="btn btn-outline-success btn-sm">Unuse</button>
                                             </form>
                                         @endif
                                     </div>

@@ -140,12 +140,26 @@ class ThemeController extends Controller
             ->with('success', 'Theme deleted successfully!');
     }
 
-    public function use(Company $company, Theme $theme)
+    public function use(Company $company, ?Theme $theme = null)
     {
-        $company->currentTheme()->associate($theme);
+        if ($theme == null) {
+            $company->currentTheme()->dissociate();
+        } else {
+            $company->currentTheme()->associate($theme);
+        }
+
         $company->save();
 
         return redirect()->route('company.edit', $company)
             ->with('success', 'Theme applied successfully!');
+    }
+
+    public function unuse(Company $company, Theme $theme)
+    {
+        $company->currentTheme()->dissociate($theme);
+        $company->save();
+
+        return redirect()->route('company.edit', $company)
+            ->with('success', 'Theme unapplied successfully!');
     }
 }

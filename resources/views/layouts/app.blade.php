@@ -31,7 +31,12 @@
             <div class="container">
                 <a class="navbar-brand" href="{{ route('home') }}">
                     @if (session()->has('theme') && isset(session('theme')->logo_path))
-                        <img src="{{ asset('storage/' . session('theme')->logo_path) }}" alt="{{ env('APP_NAME') }} Logo" class="logo" style="max-height: 40px !important; max-width: 40px !important;">
+                        <img
+                            src="{{ asset('storage/' . session('theme')->logo_path) }}"
+                            alt="{{ env('APP_NAME') }} Logo"
+                            title="{{ env('APP_NAME') }}"
+                            class="logo"
+                            style="max-height: 40px !important; max-width: 40px !important;">
                     @else
                         {{ env('APP_NAME') }}
                     @endif
