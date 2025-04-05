@@ -113,7 +113,7 @@
                 @enderror
             </div>
 
-            <div class="d-flex justify-content-between">
+            <div class="d-flex gap-2 mb-3">
                 <button type="submit" class="btn btn-primary">
                     Create
                 </button>
