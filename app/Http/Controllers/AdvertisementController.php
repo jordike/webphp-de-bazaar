@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Advertisement;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -137,5 +138,43 @@ class AdvertisementController extends Controller
         $advertisement->delete();
 
         return redirect('/advertisement');
+    }
+
+    /**
+     * Handle the upload of a CSV file to create multiple advertisements.
+     */
+    public function uploadCsv(Request $request)
+    {
+        $request->validate([
+            'csvFile' => 'required|file|mimes:csv,txt|max:2048',
+        ]);
+
+        $data = array_map('str_getcsv', file($request->file('csvFile')->getRealPath()));
+        $header = array_shift($data);
+
+        $userId = auth()->id();
+        $adCounts = [
+            'for_rent' => Advertisement::where('user_id', $userId)->where('is_for_rent', true)->count(),
+            'for_sale' => Advertisement::where('user_id', $userId)->where('is_for_rent', false)->count(),
+        ];
+
+        $newAdCounts = collect($data)->reduce(function ($counts, $row) use ($header) {
+            $type = isset($row[array_search('type', $header)]) && $row[array_search('type', $header)] === 'for_rent' ? 'for_rent' : 'for_sale';
+            $counts[$type]++;
+            return $counts;
+        }, ['for_rent' => 0, 'for_sale' => 0]);
+
+        foreach (['for_rent', 'for_sale'] as $type) {
+            if ($adCounts[$type] + $newAdCounts[$type] > 4) {
+                $typeName = $type === 'for_rent' ? 'rental' : 'regular';
+                return redirect()->back()->with('error', "You have reached the limit of 4 {$typeName} advertisements. Please delete an existing advertisement before adding more.");
+            }
+        }
+
+        foreach ($data as $row) {
+            Advertisement::create(array_combine($header, $row) + ['user_id' => $userId]);
+        }
+
+        return redirect()->route('advertisement.index')->with('success', 'Advertisements created successfully from CSV.');
     }
 }

@@ -27,6 +27,8 @@ Route::middleware('auth')->group(function () {
     Route::get('advertisement/{advertisement}/favorite', [FavoriteController::class, 'favorite'])->name('favorites.favorite');
     Route::get('favorites', [FavoriteController::class, 'index'])->name('favorites.index');
 
+    Route::post('/advertisement/upload-csv', [AdvertisementController::class, 'uploadCsv'])->name('advertisement.uploadCsv');
+
     Route::resource('company', CompanyController::class)->names('company');
     Route::resource('company.theme', ThemeController::class)->names('theme');
     Route::post('company/{company}/theme/{theme}/use', [ThemeController::class, 'use'])->name('theme.use');
