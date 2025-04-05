@@ -20,7 +20,12 @@
                     <div class="highlighted-advertisements bg-light p-3 rounded">
                         <h2 class="text-primary">Highlighted Advertisements</h2>
                         <p class="text-muted">Check out our featured advertisements!</p>
-                        <!-- Add logic to display advertisements here -->
+
+                        <div class="d-flex flex-row gap-3 flex-wrap">
+                            @foreach ($featuredAdvertisements as $advertisement)
+                                <x-advertisement :advertisement="$advertisement" />
+                            @endforeach
+                        </div>
                     </div>
                 @endif
             </div>
