@@ -40,4 +40,9 @@ class Company extends Model
     {
         return $this->hasMany(LandingPageComponent::class);
     }
+
+    public function advertisements()
+    {
+        return $this->hasManyThrough(Advertisement::class, User::class);
+    }
 }

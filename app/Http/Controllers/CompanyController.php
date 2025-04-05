@@ -61,8 +61,11 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
+        $featuredAdvertisements = $company->advertisements()->inRandomOrder()->take(3)->get();
+
         return view('company.landing-page', [
             'company' => $company,
+            'featuredAdvertisements' => $featuredAdvertisements,
         ]);
     }
 

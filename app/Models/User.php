@@ -61,4 +61,9 @@ class User extends Authenticatable
     {
         return $this->role_id == RoleEnum::PLATFORM_OWNER->value;
     }
+
+    public function advertisements()
+    {
+        return $this->hasMany(Advertisement::class);
+    }
 }
