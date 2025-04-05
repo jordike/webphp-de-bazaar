@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\ThemeController;
@@ -23,7 +24,8 @@ Route::middleware('guest')->controller(AuthController::class)->group(function ()
 
 Route::middleware('auth')->group(function () {
     Route::resource('advertisement', AdvertisementController::class)->names('advertisement');
-    Route::get('advertisement/{advertisement}/favorite', [AdvertisementController::class, 'favorite'])->name('advertisement.favorite');
+    Route::get('advertisement/{advertisement}/favorite', [FavoriteController::class, 'favorite'])->name('favorites.favorite');
+    Route::get('favorites', [FavoriteController::class, 'index'])->name('favorites.index');
 
     Route::resource('company', CompanyController::class)->names('company');
     Route::resource('company.theme', ThemeController::class)->names('theme');

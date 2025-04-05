@@ -138,20 +138,4 @@ class AdvertisementController extends Controller
 
         return redirect('/advertisement');
     }
-
-    public function favorite(Advertisement $advertisement)
-    {
-        $user = Auth::user();
-        $favorite = $user->favorites()->where('advertisement_id', $advertisement->id)->first();
-
-        if ($favorite) {
-            $favorite->delete();
-        } else {
-            $user->favorites()->create([
-                'advertisement_id' => $advertisement->id
-            ]);
-        }
-
-        return redirect()->back();
-    }
 }

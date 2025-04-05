@@ -60,6 +60,12 @@
                         </li>
 
                         @auth
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('favorites.index') }}">
+                                    Favorites
+                                </a>
+                            </li>
+
                             @if (auth()->user()->isAdmin())
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('companies.index') }}">
