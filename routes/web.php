@@ -32,6 +32,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('companies.contracts', ContractController::class)->names('contracts');
     Route::get('companies/{company}/contracts/{contract}/download', [ContractController::class, 'download'])->name('contracts.download');
 
+    Route::post('/companies/{company}/landing-page/add', [CompanyController::class, 'addLandingPageComponent'])->name('company.landing-page.add');
+    Route::post('/companies/{company}/landing-page/order', [CompanyController::class, 'updateLandingPageComponentOrder'])->name('company.landing-page.order');
+    Route::delete('/companies/{company}/landing-page/{component}', [CompanyController::class, 'deleteLandingPageComponent'])->name('company.landing-page.delete');
+
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 

@@ -35,4 +35,9 @@ class Company extends Model
     {
         return $this->belongsTo(Theme::class, 'current_theme_id');
     }
+
+    public function landingPageComponents()
+    {
+        return $this->hasMany(LandingPageComponent::class);
+    }
 }
