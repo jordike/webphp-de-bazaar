@@ -104,7 +104,7 @@ class AdvertisementController extends Controller
             'price' => 'required|numeric',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-    
+
         $userId = Auth::id();
 
         $adCount = Advertisement::where('user_id', $userId)
@@ -117,14 +117,14 @@ class AdvertisementController extends Controller
 
         // Update the advertisement with validated data
         $advertisement->update($validated);
-    
+
         // Handle the photo upload if a new one is uploaded
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
             $photoPath = $request->file('photo')->store('public/advertisements');
             $advertisement->photo = $photoPath;
             $advertisement->save();
         }
-    
+
         return redirect('/advertisement/' . $advertisement->id)
         ->with('success', 'Advertisement updated successfully!');
         }
@@ -137,5 +137,21 @@ class AdvertisementController extends Controller
         $advertisement->delete();
 
         return redirect('/advertisement');
+    }
+
+    public function favorite(Advertisement $advertisement)
+    {
+        $user = Auth::user();
+        $favorite = $user->favorites()->where('advertisement_id', $advertisement->id)->first();
+
+        if ($favorite) {
+            $favorite->delete();
+        } else {
+            $user->favorites()->create([
+                'advertisement_id' => $advertisement->id
+            ]);
+        }
+
+        return redirect()->back();
     }
 }

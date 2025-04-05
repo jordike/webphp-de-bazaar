@@ -12,5 +12,15 @@
             <p class="card-text text-truncate">{{ $advertisement->description }}</p>
             <p class="card-text"><strong>Price:</strong> €{{ $advertisement->price ?? 'N/A' }}</p>
         </div>
+
+        <div class="card-footer text-center">
+            <a href="{{ route('advertisement.favorite', $advertisement) }}">
+                @if ($advertisement->isFavorite())
+                    Remove from favorites
+                @else
+                    Add to favorites
+                @endif
+            </a>
+        </div>
     </div>
 </a>

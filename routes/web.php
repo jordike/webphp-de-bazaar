@@ -23,6 +23,7 @@ Route::middleware('guest')->controller(AuthController::class)->group(function ()
 
 Route::middleware('auth')->group(function () {
     Route::resource('advertisement', AdvertisementController::class)->names('advertisement');
+    Route::get('advertisement/{advertisement}/favorite', [AdvertisementController::class, 'favorite'])->name('advertisement.favorite');
 
     Route::resource('company', CompanyController::class)->names('company');
     Route::resource('company.theme', ThemeController::class)->names('theme');
