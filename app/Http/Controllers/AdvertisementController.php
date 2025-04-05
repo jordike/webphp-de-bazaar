@@ -107,8 +107,9 @@ class AdvertisementController extends Controller
             $advertisement->save();
         }
     
-        return redirect('advertisement.show, $advertisement->id')->with('success', 'Advertisement updated successfully!');
-    }
+        return redirect('/advertisement/' . $advertisement->id)
+        ->with('success', 'Advertisement updated successfully!');
+        }
 
     /**
      * Remove the specified resource from storage.
@@ -117,6 +118,6 @@ class AdvertisementController extends Controller
     {
         $advertisement->delete();
 
-        return redirect('/advertisment');
+        return redirect('/advertisement');
     }
 }
