@@ -8,7 +8,7 @@ return [
     ],
     'profile-dropdown' => [
         'profile' => 'Profiel',
-        'company' => 'Bedrijf',
+        'company' => 'Mijn bedrijf',
         'logout' => 'Uitloggen',
     ],
 ];

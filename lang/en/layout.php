@@ -8,7 +8,7 @@ return [
     ],
     'profile-dropdown' => [
         'profile' => 'Profile',
-        'company' => 'Company',
+        'company' => 'My company',
         'logout' => 'Logout',
     ],
 ];
