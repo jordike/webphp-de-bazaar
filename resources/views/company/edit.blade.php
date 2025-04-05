@@ -150,7 +150,7 @@
                                     @if ($theme->logo_path)
                                         <div class="mb-3">
                                             <p><strong>Logo:</strong></p>
-                                            <img src="{{ $theme->getLogoPath() }}" alt="Logo" class="img-fluid rounded shadow-sm">
+                                            <img src="{{ $theme->getLogoPath() }}" alt="Logo" class="img-fluid rounded shadow-sm logo">
                                         </div>
                                     @endif
 

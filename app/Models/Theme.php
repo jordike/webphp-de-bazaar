@@ -26,6 +26,10 @@ class Theme extends Model
 
     public function getLogoPath()
     {
-        return $this->logo_path ? asset('storage/logo/' . $this->logo_path) : null;
+        if (!$this->logo_path) {
+            return null;
+        }
+
+        return asset('storage/' . $this->logo_path);
     }
 }

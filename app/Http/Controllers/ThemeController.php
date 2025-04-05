@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\Theme;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ThemeController extends Controller
 {
@@ -44,14 +45,26 @@ class ThemeController extends Controller
             'logo_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $data = $request->except('logo_path');
-        $data['company_id'] = $company->id;
+        $logo = $request->file('logo_path');
 
         if ($request->hasFile('logo_path')) {
-            $data['logo_path'] = $request->file('logo_path')->store('logos', 'public');
+            $logoPath = $logo->storeAs('logos', Str::uuid() . '.' . $logo->getClientOriginalExtension(), 'local');
         }
 
-        Theme::create($data);
+        $theme = new Theme();
+        $theme->fill([
+            'name' => $request->input('name'),
+            'company_id' => $company->id,
+            'description' => $request->input('description'),
+            'primary_color' => $request->input('primary_color'),
+            'secondary_color' => $request->input('secondary_color'),
+            'background_color' => $request->input('background_color'),
+            'text_color' => $request->input('text_color'),
+            'font_family' => $request->input('font_family'),
+            'font_size' => $request->input('font_size'),
+            'logo_path' => isset($logoPath) ? $logoPath : null,
+        ]);
+        $theme->save();
 
         return redirect()->route('company.edit', $company)
             ->with('success', 'Theme created successfully!');
@@ -79,7 +92,7 @@ class ThemeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Company $company, Theme $theme)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -93,16 +106,26 @@ class ThemeController extends Controller
             'logo_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $theme = Theme::findOrFail($id);
-        $data = $request->except('logo_path');
+        $logo = $request->file('logo_path');
 
         if ($request->hasFile('logo_path')) {
-            $data['logo_path'] = $request->file('logo_path')->store('logos', 'public');
+            $logoPath = $logo->storeAs('logos', Str::uuid() . '.' . $logo->getClientOriginalExtension(), 'local');
         }
 
-        $theme->update($data);
+        $theme->fill([
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'primary_color' => $request->input('primary_color'),
+            'secondary_color' => $request->input('secondary_color'),
+            'background_color' => $request->input('background_color'),
+            'text_color' => $request->input('text_color'),
+            'font_family' => $request->input('font_family'),
+            'font_size' => $request->input('font_size'),
+            'logo_path' => isset($logoPath) ? $logoPath : null,
+        ]);
+        $theme->save();
 
-        return redirect()->route('company.edit', $theme->company)
+        return redirect()->route('company.edit', $company)
             ->with('success', 'Theme updated successfully!');
     }
 

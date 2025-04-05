@@ -111,7 +111,7 @@
 
                 @if ($theme->logo_path)
                     <div class="mt-2">
-                        <img src="{{ asset('storage/' . $theme->logo_path) }}" alt="Current Logo" class="img-fluid" style="max-height: 100px;">
+                        <img src="{{ asset('storage/' . $theme->logo_path) }}" alt="Current Logo" class="img-fluid logo">
                     </div>
                 @endif
 
