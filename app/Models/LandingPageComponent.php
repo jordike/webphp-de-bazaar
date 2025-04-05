@@ -17,4 +17,9 @@ class LandingPageComponent extends Model
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function getImageUrlAttribute()
+    {
+        return $this->type === 'image' ? asset('storage/' . $this->content) : null;
+    }
 }

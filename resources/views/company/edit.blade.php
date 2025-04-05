@@ -7,7 +7,7 @@
 
     <x-status-messages />
 
-    <div class="accordion" id="editCompanyAccordion">
+    <div class="accordion mb-3" id="editCompanyAccordion">
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingCompanyDetails">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCompanyDetails" aria-expanded="true" aria-controls="collapseCompanyDetails">
@@ -210,7 +210,63 @@
             </h2>
             <div id="collapseLandingPage" class="accordion-collapse collapse" aria-labelledby="headingLandingPage" data-bs-parent="#editCompanyAccordion">
                 <div class="accordion-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2>Landing Page Components</h2>
 
+                        <form action="{{ route('company.landing-page.add', $company) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="input-group">
+                                <select name="type" class="form-select" required>
+                                    <option value="text">Text</option>
+                                    <option value="image">Image</option>
+                                    <option value="highlighted_advertisements">Highlighted Advertisements</option>
+                                </select>
+                                <input type="text" name="content" class="form-control" placeholder="Content (optional)">
+                                <button type="submit" class="btn btn-primary">Add</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    @if ($company->landingPageComponents->isEmpty())
+                        <div class="alert alert-info" role="alert">
+                            No components available. Please add a component.
+                        </div>
+                    @else
+                        <ul class="list-group" id="landingPageComponentsList">
+                            @foreach ($company->landingPageComponents->sortBy('order') as $component)
+                                <li class="list-group-item d-flex justify-content-between align-items-center" data-id="{{ $component->id }}">
+                                    <span>
+                                        @if ($component->type === 'image')
+                                            Image: <img src="{{ asset('storage/' . $component->content) }}" alt="Image" style="max-width: 100px;">
+                                        @elseif ($component->type === 'text')
+                                            Text: {{ $component->content }}
+                                        @elseif ($component->type === 'highlighted_advertisements')
+                                            Highlighted Advertisements
+                                        @endif
+                                    </span>
+                                    <div>
+                                        <form action="{{ route('company.landing-page.order', $company) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            <input type="hidden" name="id" value="{{ $component->id }}">
+                                            <input type="hidden" name="direction" value="up">
+                                            <button type="submit" class="btn btn-secondary btn-sm">Up</button>
+                                        </form>
+                                        <form action="{{ route('company.landing-page.order', $company) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            <input type="hidden" name="id" value="{{ $component->id }}">
+                                            <input type="hidden" name="direction" value="down">
+                                            <button type="submit" class="btn btn-secondary btn-sm">Down</button>
+                                        </form>
+                                        <form action="{{ route('company.landing-page.delete', [$company, $component]) }}" method="POST" class="d-inline delete-form">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm delete-button">Delete</button>
+                                        </form>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
                 </div>
             </div>
         </div>
@@ -219,4 +275,34 @@
 
 @push('scripts')
     <script src="{{ asset('js/deleteConfirmation.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const typeSelect = document.querySelector('select[name="type"]');
+            const contentInput = document.querySelector('input[name="content"]');
+            const fileInput = document.createElement('input');
+
+            fileInput.type = 'file';
+            fileInput.name = 'image';
+            fileInput.classList.add('form-control');
+            fileInput.style.display = 'none';
+
+            typeSelect.addEventListener('change', function () {
+                if (typeSelect.value === 'image') {
+                    contentInput.style.display = 'none';
+                    contentInput.value = '';
+                    fileInput.style.display = 'block';
+                    contentInput.parentNode.insertBefore(fileInput, contentInput.nextSibling);
+                } else if (typeSelect.value === 'highlighted_advertisements') {
+                    contentInput.style.display = 'none';
+                    contentInput.value = '';
+                    fileInput.style.display = 'none';
+                    fileInput.value = '';
+                } else {
+                    contentInput.style.display = 'block';
+                    fileInput.style.display = 'none';
+                    fileInput.value = '';
+                }
+            });
+        });
+    </script>
 @endpush
