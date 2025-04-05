@@ -15,6 +15,10 @@
                 <img src="{{ Storage::url($advertisement->photo) }}" alt="Photo" class="rounded w-full max-w-md">
             </div>
         @endif
+        <div class="mt-4">
+            <h3 class="text-lg font-semibold">Share this ad:</h3>
+            <img src="{{ $qrCodeDataUrl }}" alt="QR Code" class="mt-2">
+        </div>
     </div>
 </div>
 <div class="">

@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Advertisement;
 use App\Http\Controllers\Controller;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\Label\LabelAlignment;
 use Illuminate\Http\Request;
 
 class AdvertisementController extends Controller
@@ -81,8 +86,17 @@ class AdvertisementController extends Controller
      */
     public function show(Advertisement $advertisement)
     {
-        return view('advertisement.show', compact('advertisement'));
-    }
+        $adUrl = route('advertisement.show', ['advertisement' => $advertisement->id]);
+
+        $writer = new PngWriter();
+
+        
+        $qrCode = new QrCode($adUrl);
+        $result = $writer->write($qrCode);
+
+        $qrCodeDataUrl = $result->getDataUri();
+
+    return view('advertisement.show', compact('advertisement', 'qrCodeDataUrl'));    }
 
     /**
      * Show the form for editing the specified resource.
