@@ -11,7 +11,7 @@
             <div class="card-body">
                 @if($advertisement->photo)
                     <div class="mb-3">
-                        <img src="{{ Storage::url($advertisement->photo) }}" alt="Photo" class="img-fluid rounded">
+                        <img src="{{ $advertisement->getPhotoUrl() }}" alt="Photo" class="img-fluid rounded" style="max-width: 200px">
                     </div>
                 @endif
 
@@ -20,7 +20,7 @@
                 <p class="card-text"><strong>Status:</strong> {{ $advertisement->is_for_rent ? 'For Rent' : 'For Sale' }}</p>
             </div>
             <div class="card-footer text-end">
-                <a href="/advertisement/{{ $advertisement->id }}/edit" class="btn btn-primary">Edit Job</a>
+                <a href="{{ route('advertisement.edit', $advertisement) }}" class="btn btn-primary">Edit Job</a>
             </div>
         </div>
     </div>

@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Advertisement extends Model
 {
-
     protected $fillable = [
         'title',
         'description',
@@ -44,5 +43,14 @@ class Advertisement extends Model
     public function isFavorite()
     {
         return $this->favorites()->where('user_id', auth()->id())->exists();
+    }
+
+    public function getPhotoUrl()
+    {
+        if (!$this->photo) {
+            return null;
+        }
+
+        return asset('storage/' . $this->photo);
     }
 }
