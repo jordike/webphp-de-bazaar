@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use App\Models\Advertisement;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AdvertisementController extends Controller
 {
@@ -16,18 +16,19 @@ class AdvertisementController extends Controller
     public function index()
     {
         $user = Auth::user();
-
         $forRent = Advertisement::where('user_id', $user->id)
-        ->where('is_for_rent', true)
-        ->latest()
-        ->get();
-
+            ->where('is_for_rent', true)
+            ->latest()
+            ->get();
         $forSale = Advertisement::where('user_id', $user->id)
             ->where('is_for_rent', false)
             ->latest()
             ->get();
 
-    return view('advertisement.index', compact('forRent', 'forSale'));
+        return view('advertisement.index', [
+            'forRent' => $forRent,
+            'forSale' => $forSale
+        ]);
     }
 
     /**
@@ -51,12 +52,9 @@ class AdvertisementController extends Controller
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validates image file
         ]);
 
-        // TODO: Ensure user is authenticated (check if user is logged in)
-        $userId = Auth::id(); // Get the authenticated user's ID
-
-        $adCount = Advertisement::where('user_id', $userId)
-                            ->where('is_for_rent', $request->is_for_rent)
-                            ->count();
+        $adCount = Advertisement::where('user_id', auth()->id())
+            ->where('is_for_rent', $request->is_for_rent)
+            ->count();
 
         if ($adCount >= 4) {
             return redirect()->back()->with('error', 'You can only create up to 4 advertisements in this category.');
@@ -70,11 +68,12 @@ class AdvertisementController extends Controller
 
         Advertisement::create([
             ...$validated,
-            'user_id' => $userId,
+            'user_id' => auth()->id(),
             'photo' => $photoPath,
         ]);
 
-        return redirect('/advertisement')->with('success', 'Advertisement created successfully!');
+        return redirect()->route('advertisement.index')
+            ->with('success', 'Advertisement created successfully!');
     }
 
     /**
@@ -106,14 +105,13 @@ class AdvertisementController extends Controller
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $userId = Auth::id();
-
-        $adCount = Advertisement::where('user_id', $userId)
-        ->where('is_for_rent', $request->is_for_rent)
-        ->count();
+        $adCount = Advertisement::where('user_id', auth()->id())
+            ->where('is_for_rent', $request->is_for_rent)
+            ->count();
 
         if ($adCount >= 4) {
-        return redirect()->back()->with('error', 'You can only create up to 4 advertisements in this category.');
+            return redirect()->back()
+                ->with('error', 'You can only create up to 4 advertisements in this category.');
         }
 
         // Update the advertisement with validated data
@@ -121,14 +119,16 @@ class AdvertisementController extends Controller
 
         // Handle the photo upload if a new one is uploaded
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
-            $photoPath = $request->file('photo')->store('public/advertisements');
+            $photo = $request->file('photo');
+            $photoPath = $photo->storeAs('advertisements', Str::uuid() . '.' . $photo->getClientOriginalExtension(), 'local');
+
             $advertisement->photo = $photoPath;
             $advertisement->save();
         }
 
-        return redirect('/advertisement/' . $advertisement->id)
-        ->with('success', 'Advertisement updated successfully!');
-        }
+        return redirect()->route('advertisement.show', $advertisement->id)
+            ->with('success', 'Advertisement updated successfully!');
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -137,7 +137,8 @@ class AdvertisementController extends Controller
     {
         $advertisement->delete();
 
-        return redirect('/advertisement');
+        return redirect()->route('advertisement.index')
+            ->with('success', 'Advertisement deleted successfully!');
     }
 
     /**
@@ -152,10 +153,9 @@ class AdvertisementController extends Controller
         $data = array_map('str_getcsv', file($request->file('csvFile')->getRealPath()));
         $header = array_shift($data);
 
-        $userId = auth()->id();
         $adCounts = [
-            'for_rent' => Advertisement::where('user_id', $userId)->where('is_for_rent', true)->count(),
-            'for_sale' => Advertisement::where('user_id', $userId)->where('is_for_rent', false)->count(),
+            'for_rent' => Advertisement::where('user_id', auth()->id())->where('is_for_rent', true)->count(),
+            'for_sale' => Advertisement::where('user_id', auth()->id())->where('is_for_rent', false)->count(),
         ];
 
         $newAdCounts = collect($data)->reduce(function ($counts, $row) use ($header) {
@@ -167,14 +167,19 @@ class AdvertisementController extends Controller
         foreach (['for_rent', 'for_sale'] as $type) {
             if ($adCounts[$type] + $newAdCounts[$type] > 4) {
                 $typeName = $type === 'for_rent' ? 'rental' : 'regular';
-                return redirect()->back()->with('error', "You have reached the limit of 4 {$typeName} advertisements. Please delete an existing advertisement before adding more.");
+
+                return redirect()->back()
+                    ->with('error', "You have reached the limit of 4 {$typeName} advertisements. Please delete an existing advertisement before adding more.");
             }
         }
 
         foreach ($data as $row) {
-            Advertisement::create(array_combine($header, $row) + ['user_id' => $userId]);
+            Advertisement::create(array_combine($header, $row) + [
+                'user_id' => auth()->id()
+            ]);
         }
 
-        return redirect()->route('advertisement.index')->with('success', 'Advertisements created successfully from CSV.');
+        return redirect()->route('advertisement.index')
+            ->with('success', 'Advertisements created successfully from CSV.');
     }
 }
