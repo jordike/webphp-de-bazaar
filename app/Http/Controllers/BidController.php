@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Advertisement;
 use App\Models\Bid;
+use App\Models\PurchasedProduct;
 use App\Models\RentedProduct;
 use Illuminate\Http\Request;
 
@@ -108,6 +109,12 @@ class BidController extends Controller
                 'price' => $bid->amount,
                 'start_date' => now(),
                 'end_date' => now()->addDays(30),
+            ]);
+        } else {
+            PurchasedProduct::create([
+                'advertisement_id' => $bid->advertisement_id,
+                'user_id' => $bid->user_id,
+                'price' => $bid->amount,
             ]);
         }
 

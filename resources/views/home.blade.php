@@ -65,6 +65,43 @@
                     @endif
                 </tbody>
             </table>
+
+            {{ $rentedProducts->links() }}
+        </section>
+
+        <hr />
+
+        <section>
+            <h2 class="mb-3">Your purchased products</h2>
+
+            <table class="table table-striped table-bordered table-hover table-responsive">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Purchase date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if ($purchasedProducts->isEmpty())
+                        <tr>
+                            <td colspan="4" class="text-center">No purchased products found.</td>
+                        </tr>
+                    @else
+                        @foreach ($purchasedProducts as $purchasedProduct)
+                            <tr>
+                                <td>{{ $purchasedProduct->advertisement->title }}</td>
+                                <td>{{ $purchasedProduct->advertisement->description }}</td>
+                                <td>€{{ number_format($purchasedProduct->price, 2, ',', '.') }}</td>
+                                <td>{{ $purchasedProduct->created_at->format('d-m-Y') }}</td>
+                            </tr>
+                        @endforeach
+                    @endif
+                </tbody>
+            </table>
+
+            {{ $purchasedProducts->links() }}
         </section>
     @endauth
 @endsection
