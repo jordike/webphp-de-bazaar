@@ -69,7 +69,7 @@
                                     </form>
                                 @else
                                     <span class="text-muted">
-                                        {{ __('bid.no_actions_available') }} }}
+                                        {{ __('bid.no_actions_available') }}
                                     </span>
                                 @endif
                             </td>

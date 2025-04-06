@@ -33,7 +33,7 @@
             </div>
             <div class="card-footer text-end">
                 <a href="{{ route('advertisement.bid.show-bids', $advertisement) }}" class="btn btn-secondary">
-                    {{ __('advertisements.view_bids') }} }}
+                    {{ __('advertisements.view_bids') }}
                 </a>
 
                 @if ($advertisement->user_id === auth()->id())

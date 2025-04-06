@@ -38,13 +38,13 @@
 
                     <div class="mb-3">
                         <label for="comment" class="form-label">
-                            {{ __('reviews.comment') }} }}
+                            {{ __('reviews.comment') }}
                         </label>
                         <textarea name="comment" id="comment" class="form-control" rows="3" required></textarea>
                     </div>
 
                     <button type="submit" class="btn btn-success">
-                        {{ __('reviews.submit') }} }}
+                        {{ __('reviews.submit') }}
                     </button>
                 </form>
             @else
