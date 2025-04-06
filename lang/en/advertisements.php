@@ -70,4 +70,6 @@ return [
         'rented_by' => 'Rented by',
         'rented_on' => 'Rented on',
     ],
+    'remove_from_favorites' => 'Remove from favorites',
+    'add_to_favorites' => 'Add to favorites',
 ];

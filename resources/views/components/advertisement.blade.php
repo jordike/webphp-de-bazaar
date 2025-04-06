@@ -16,9 +16,9 @@
         <div class="card-footer text-center">
             <a href="{{ route('advertisement.favorites.favorite', $advertisement) }}">
                 @if ($advertisement->isFavorite())
-                    Remove from favorites
+                    {{ __('advertisements.remove_from_favorites') }}
                 @else
-                    Add to favorites
+                    {{ __('advertisements.add_to_favorites') }}
                 @endif
             </a>
         </div>
