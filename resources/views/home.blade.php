@@ -48,7 +48,7 @@
                             <tr>
                                 <td>{{ $rentedProduct->advertisement->title }}</td>
                                 <td>{{ $rentedProduct->advertisement->description }}</td>
-                                <td>€{{ number_format($rentedProduct->advertisement->price, 2, ',', '.') }}</td>
+                                <td>€{{ number_format($rentedProduct->price, 2, ',', '.') }}</td>
                                 <td>{{ $rentedProduct->start_date->format('d-m-Y') }}</td>
                                 <td>{{ $rentedProduct->end_date->format('d-m-Y') }}</td>
                                 <td>

@@ -88,7 +88,7 @@ class BidController extends Controller
 
     public function showBids(Request $request, Advertisement $advertisement)
     {
-        $bids = $advertisement->bids()->get();
+        $bids = $advertisement->bids()->paginate(10);
 
         return view('bid.show-bids', [
             'advertisement' => $advertisement,
@@ -105,9 +105,9 @@ class BidController extends Controller
             RentedProduct::create([
                 'advertisement_id' => $bid->advertisement_id,
                 'user_id' => $bid->user_id,
-                'amount' => $bid->amount,
+                'price' => $bid->amount,
                 'start_date' => now(),
-                'end_date' => now()->addDays(30), // Assuming a 30-day rental period
+                'end_date' => now()->addDays(30),
             ]);
         }
 

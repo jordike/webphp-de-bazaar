@@ -21,6 +21,7 @@ class RentedProduct extends Model
         'end_date' => 'date',
         'return_date' => 'date',
         'return_wear_state' => 'integer',
+        'price' => 'decimal:2',
     ];
 
     public function advertisement()

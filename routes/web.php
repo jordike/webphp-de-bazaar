@@ -29,7 +29,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('advertisement', AdvertisementController::class)->names('advertisement');
     Route::get('advertisement/{advertisement}/favorite', [FavoriteController::class, 'favorite'])->name('favorites.favorite');
     Route::get('favorites', [FavoriteController::class, 'index'])->name('favorites.index');
-    Route::resource('advertisement.rent', RentController::class)->names('advertisement.rent');
     Route::post('advertisement/{advertisement}/rent/return', [RentController::class, 'return'])->name('advertisement.rent.return');
 
     Route::post('/advertisement/upload-csv', [AdvertisementController::class, 'uploadCsv'])->name('advertisement.uploadCsv');
