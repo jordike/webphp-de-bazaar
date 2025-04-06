@@ -20,19 +20,12 @@ class AdvertisementController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        $forRent = Advertisement::where('user_id', $user->id)
-            ->where('is_for_rent', true)
-            ->latest()
-            ->paginate(10);
-        $forSale = Advertisement::where('user_id', $user->id)
-            ->where('is_for_rent', false)
-            ->latest()
-            ->paginate(10);
+        $forRent = Advertisement::where('is_for_rent', true)->latest()->paginate(10);
+        $forSale = Advertisement::where('is_for_rent', false)->latest()->paginate(10);
 
         return view('advertisement.index', [
             'forRent' => $forRent,
-            'forSale' => $forSale
+            'forSale' => $forSale,
         ]);
     }
 
@@ -41,7 +34,7 @@ class AdvertisementController extends Controller
      */
     public function create()
     {
-        Gate::authorize('create');
+        Gate::authorize('create', Advertisement::class);
 
         $allAdvertisements = Advertisement::all()->where('user_id', auth()->id());
 
@@ -55,7 +48,7 @@ class AdvertisementController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('create');
+        Gate::authorize('create', Advertisement::class);
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -198,7 +191,7 @@ class AdvertisementController extends Controller
      */
     public function uploadCsv(Request $request)
     {
-        Gate::authorize('create');
+        Gate::authorize('create', Advertisement::class);
 
         $request->validate([
             'csvFile' => 'required|file|mimes:csv,txt|max:2048',
@@ -294,5 +287,25 @@ class AdvertisementController extends Controller
 
         return redirect()->back()
             ->with('success', 'Review deleted successfully!');
+    }
+
+    public function myAdvertisements()
+    {
+        Gate::authorize('create', Advertisement::class);
+
+        $user = Auth::user();
+        $forRent = Advertisement::where('user_id', $user->id)
+            ->where('is_for_rent', true)
+            ->latest()
+            ->paginate(10);
+        $forSale = Advertisement::where('user_id', $user->id)
+            ->where('is_for_rent', false)
+            ->latest()
+            ->paginate(10);
+
+        return view('advertisement.my-advertisements', [
+            'forRent' => $forRent,
+            'forSale' => $forSale
+        ]);
     }
 }

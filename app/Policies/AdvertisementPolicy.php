@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\RoleEnum;
+use App\Models\Advertisement;
 use App\Models\User;
 
 class AdvertisementPolicy

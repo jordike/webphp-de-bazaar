@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Bid;
 use App\Models\User;
 
 class BidPolicy
