@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Advertisement;
 use App\Http\Controllers\Controller;
+use App\Models\Review;
+use App\Models\User;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Illuminate\Http\Request;
@@ -217,5 +219,64 @@ class AdvertisementController extends Controller
 
         return redirect()->route('advertisement.index')
             ->with('success', 'Advertisements created successfully from CSV.');
+    }
+
+    public function review(Request $request, Advertisement $advertisement)
+    {
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string|max:1000',
+        ]);
+
+        $advertisement->reviews()->create([
+            'advertisement_id' => $advertisement->id,
+            'user_id' => auth()->id(),
+            'rating' => $request->input('rating'),
+            'comment' => $request->input('comment'),
+        ]);
+
+        return redirect()->back()
+            ->with('success', 'Review submitted successfully!');
+    }
+
+    public function advertiser(User $advertiser)
+    {
+        $advertisements = Advertisement::where('user_id', $advertiser->id)->latest()->get();
+
+        return view('advertisement.advertiser', [
+            'advertiser' => $advertiser,
+            'advertisements' => $advertisements,
+        ]);
+    }
+
+    public function reviewAdvertiser(Request $request, User $advertiser)
+    {
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string|max:1000',
+        ]);
+
+        $advertiser->reviews()->create([
+            'user_id' => auth()->id(),
+            'advertiser_id' => $advertiser->id,
+            'rating' => $request->input('rating'),
+            'comment' => $request->input('comment'),
+        ]);
+
+        return redirect()->back()
+            ->with('success', 'Review submitted successfully!');
+    }
+
+    public function deleteReview(Request $request, User $advertiser, Review $review)
+    {
+        if ($review->user_id != auth()->id()) {
+            return redirect()->back()
+                ->with('error', 'You are not authorized to delete this review.');
+        }
+
+        $review->delete();
+
+        return redirect()->back()
+            ->with('success', 'Review deleted successfully!');
     }
 }

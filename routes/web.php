@@ -55,6 +55,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('advertisement/{advertisement}/bid/accept/{bid}', [BidController::class, 'accept'])->name('advertisement.bid.accept');
     Route::patch('advertisement/{advertisement}/bid/reject/{bid}', [BidController::class, 'reject'])->name('advertisement.bid.reject');
     Route::get('advertisement/{advertisement}/bids', [BidController::class, 'showBids'])->name('advertisement.bid.show-bids');
+
+    Route::post('advertisement/{advertisement}/review', [AdvertisementController::class, 'review'])->name('advertisement.review');
+
+    Route::get('advertisement/advertiser/{advertiser}', [AdvertisementController::class, 'advertiser'])->name('advertisement.advertiser');
+    Route::post('advertisement/advertiser/{advertiser}/review', [AdvertisementController::class, 'reviewAdvertiser'])->name('advertisement.advertiser.review');
+    Route::post('advertisement/advertiser/{advertiser}/review/{review}/delete', [AdvertisementController::class, 'deleteReview'])->name('advertisement.advertiser.review.delete');
 });
 
 Route::get('/locale/{locale}', [LocaleController::class, '__invoke'])->name('locale.switch');
