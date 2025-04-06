@@ -42,4 +42,9 @@ class RentedProduct extends Model
 
         return $this->return_wear_state . "%";
     }
+
+    public function isReturned()
+    {
+        return $this->return_date !== null;
+    }
 }

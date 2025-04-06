@@ -5,6 +5,8 @@
 @section("content")
     <h1>De Bazaar</h1>
 
+    <x-status-messages />
+
     <hr />
 
     <section>
@@ -52,12 +54,11 @@
                                 <td>{{ $rentedProduct->start_date->format('d-m-Y') }}</td>
                                 <td>{{ $rentedProduct->end_date->format('d-m-Y') }}</td>
                                 <td>
-                                    <form action="{{ route('advertisement.rent.return', $rentedProduct) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        @method('POST')
-
-                                        <button type="submit" class="btn btn-secondary btn-sm">Return</button>
-                                    </form>
+                                    @if ($rentedProduct->isReturned())
+                                        <span class="badge bg-success">Returned</span>
+                                    @else
+                                        <a href="{{ route('advertisement.rent.return', $rentedProduct->id) }}" class="btn btn-primary">Return</a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
