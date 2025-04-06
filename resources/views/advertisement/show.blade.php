@@ -87,7 +87,7 @@
 
             <h3>All Submitted Reviews</h3>
 
-            @forelse ($advertisement->reviews as $review)
+            @forelse ($reviews as $review)
                 <div class="card mb-2">
                     <div class="card-body">
                         <h5 class="card-title">Rating: {{ $review->rating }}/5</h5>
@@ -106,6 +106,8 @@
             @empty
                 <p class="text-muted">No reviews yet.</p>
             @endforelse
+
+            {{ $reviews->links() }}
         </div>
     </div>
 @endsection

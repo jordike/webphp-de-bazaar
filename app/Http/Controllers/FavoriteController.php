@@ -10,7 +10,7 @@ class FavoriteController extends Controller
 {
     public function index(Request $request)
     {
-        $favorites = $request->user()->favorites()->with('advertisement')->get();
+        $favorites = $request->user()->favorites()->with('advertisement')->paginate(10);
 
         return view('favorites', [
             'favorites' => $favorites

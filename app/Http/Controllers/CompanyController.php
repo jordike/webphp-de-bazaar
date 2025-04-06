@@ -78,8 +78,11 @@ class CompanyController extends Controller
 
         Gate::authorize('update', $company);
 
+        $themes = $company->themes()->paginate(10);
+
         return view('company.edit', [
             'company' => $company,
+            'themes' => $themes,
         ]);
     }
 

@@ -101,13 +101,13 @@
                         <a href="{{ route('theme.create', $company) }}" class="btn btn-outline-primary">Add Theme</a>
                     </div>
 
-                    @if ($company->themes->isEmpty())
+                    @if ($themes->isEmpty())
                         <div class="alert alert-info" role="alert">
                             No themes available. Please add a theme.
                         </div>
                     @else
                         <div class="accordion" id="themesAccordion">
-                            @foreach ($company->themes as $theme)
+                            @foreach ($themes as $theme)
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="heading{{ $theme->id }}">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $theme->id }}" aria-expanded="false" aria-controls="collapse{{ $theme->id }}">
@@ -196,6 +196,8 @@
                                     </div>
                                 </div>
                             @endforeach
+
+                            {{ $themes->links() }}
                         </div>
                     @endif
                 </div>
