@@ -27,7 +27,7 @@ class Advertisement extends Model
         parent::boot();
 
         static::creating(function ($advertisement) {
-            $advertisement->expires_at = now()->addDays(30);
+            $advertisement->expiration_date = now()->addDays(30);
         });
     }
 

@@ -82,6 +82,7 @@ class AdvertisementController extends Controller
             'is_for_rent' => $validated['is_for_rent'],
             'user_id' => $userId,
             'photo' => $photoPath,
+            'expiration_date' => now()->addDays(30),
         ]);
 
         if ($request->has('related_ads')) {
