@@ -2,11 +2,14 @@
 
 return [
     'advertisements' => 'Advertisements',
+    'advertisement' => 'Advertisement',
+    'renter' => 'Renter',
     'advertiser' => [
         'no_advertisements' => 'No advertisements found for this advertiser.',
     ],
     'create' => [
         'title' => 'Create your advertisement',
+        'create' => 'Create new advertisement',
         'submit' => 'Create advertisement',
     ],
     'edit' => [
@@ -22,8 +25,10 @@ return [
         'none_for_sale' => 'No advertisements for sale.',
         'create' => 'Create',
         'upload_csv' => 'Upload CSV',
+        'no_advertisements' => 'No advertisements found.',
     ],
     'my_advertisements' => 'My advertisements',
+    'your_advertisements' => 'Your advertisements',
     'form' => [
         'title' => 'Title',
         'title_placeholder' => 'Please enter a title for your product',
@@ -34,6 +39,13 @@ return [
         'price_placeholder' => 'Please enter your product price',
         'upload_photo' => 'Upload a photo',
         'status' => 'Status',
+        'date_placed' => 'Date placed',
+        'expiration_date' => 'Expiration date',
+        'actions' => 'Actions',
+        'start_date' => 'Start date',
+        'end_date' => 'End date',
+        'return_date' => 'Return date',
+        'wear_state' => 'Wear state',
     ],
     'related_advertisements' => [
         'label' => 'Related advertisements',
@@ -49,5 +61,13 @@ return [
         'advertisement_deleted' => 'Advertisement deleted successfully!',
         'max_of_category_reached' => 'You have reached the limit of 4 :type advertisements. Please delete an existing advertisement before adding more.',
         'advertisements_created_from_csv' => 'Advertisements created successfully from CSV!',
-    ]
+    ],
+    'rented_products' => [
+        'title' => 'Rented products',
+        'no_rented_products' => 'No rented products found.',
+        'rented' => 'Rented',
+        'not_rented' => 'Not rented',
+        'rented_by' => 'Rented by',
+        'rented_on' => 'Rented on',
+    ],
 ];
