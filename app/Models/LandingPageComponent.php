@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class LandingPageComponent extends Model
 {
+    use HasFactory;
+
     public const TYPE_TEXT = 'text';
     public const TYPE_IMAGE = 'image';
     public const TYPE_HIGHLIGHTED_ADVERTISEMENTS = 'highlighted_advertisements';
