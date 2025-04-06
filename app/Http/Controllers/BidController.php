@@ -29,7 +29,7 @@ class BidController extends Controller
 
         if ($pendingBids >= 4) {
             return redirect()->route('advertisement.bid.show-bids', $advertisement)
-                ->with('error', 'You can only place a maximum of 4 bids!');
+                ->with('error', __('bid.messages.max_bid_amount'));
         }
 
         return view('bid.create', [
@@ -53,7 +53,7 @@ class BidController extends Controller
         ]);
 
         return redirect()->route('advertisement.bid.show-bids', $advertisement)
-            ->with('success', 'Bid placed successfully!');
+            ->with('success', __('bid.messages.bid_placed'));
     }
 
     /**
@@ -122,7 +122,7 @@ class BidController extends Controller
         }
 
         return redirect()->route('advertisement.bid.show-bids', $advertisement)
-            ->with('success', 'Bid accepted successfully!');
+            ->with('success', __('bid.messages.bid_accepted'));
     }
 
     public function reject(Request $request, Advertisement $advertisement, Bid $bid)
@@ -133,6 +133,6 @@ class BidController extends Controller
         $bid->save();
 
         return redirect()->route('advertisement.bid.show-bids', $advertisement)
-            ->with('success', 'Bid rejected successfully!');
+            ->with('success', __('bid.messages.bid_rejected'));
     }
 }

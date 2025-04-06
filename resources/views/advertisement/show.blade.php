@@ -17,31 +17,37 @@
 
                 <p class="card-text">{{ $advertisement->description }}</p>
                 <p class="card-text">
-                    <strong>Price:</strong>
+                    <strong>{{ __('advertisements.form.price') }}:</strong>
                     € {{ number_format($advertisement->price, 2) }}
                 </p>
                 <p class="card-text">
-                    <strong>Status:</strong>
-                    {{ $advertisement->is_for_rent ? 'For Rent' : 'For Sale' }}
+                    <strong>{{ __('advertisements.form.status') }}:</strong>
+                    {{ $advertisement->is_for_rent ? __('advertisements.overview.for_rent') : __('advertisements.overview.for_sale') }}
                 </p>
                 <p class="card-text">
-                    <strong>By:</strong>
+                    <strong>{{ __('advertisements.by') }}<strong>
                     <a href="{{ route('advertisement.advertiser', $advertisement->user_id) }}">
                         {{ $advertisement->user->name }}
                     </a>
                 </p>
             </div>
             <div class="card-footer text-end">
-                <a href="{{ route('advertisement.bid.show-bids', $advertisement) }}" class="btn btn-secondary">View bids</a>
+                <a href="{{ route('advertisement.bid.show-bids', $advertisement) }}" class="btn btn-secondary">
+                    {{ __('advertisements.view_bids') }}
+                </a>
 
                 @if ($advertisement->user_id === auth()->id())
-                    <a href="{{ route('advertisement.edit', $advertisement) }}" class="btn btn-primary">Edit</a>
+                    <a href="{{ route('advertisement.edit', $advertisement) }}" class="btn btn-primary">
+                        {{ __('advertisements.edit.edit') }}
+                    </a>
 
                     <form action="{{ route('advertisement.destroy', $advertisement) }}" method="POST" class="d-inline delete-form">
                         @csrf
                         @method('DELETE')
 
-                        <button type="submit" class="btn btn-danger delete-button">Delete</button>
+                        <button type="submit" class="btn btn-danger delete-button">
+                            {{ __('advertisements.edit.delete') }}
+                        </button>
                     </form>
                 @endif
             </div>
@@ -50,12 +56,12 @@
         <hr />
 
         <div class="mb-3">
-            <h2>Related Advertisements</h2>
+            <h2>{{ __('advertisements.related_advertisements.label') }}</h2>
             <div class="d-flex flex-wrap gap-3">
                 @forelse ($advertisement->relatedAdvertisements as $related)
                     <x-advertisement :advertisement="$related" />
                 @empty
-                    <p>No related advertisements found.</p>
+                    <p>{{ __('advertisements.related_advertisements.none') }}</p>
                 @endforelse
             </div>
         </div>
@@ -63,48 +69,60 @@
         <hr />
 
         <div class="mb-3">
-            <h2>Reviews</h2>
+            <h2>{{ __('reviews.reviews') }}</h2>
 
             @if(auth()->check())
-                <h3>Leave a review</h3>
+                <h3>{{ __('reviews.leave_review') }}</h3>
 
                 <form action="{{ route('advertisement.review', $advertisement) }}" method="POST" class="mb-3">
                     @csrf
 
                     <div class="mb-3">
-                        <label for="rating" class="form-label">Rating (1-5)</label>
-                        <input type="number" name="rating" id="rating" class="form-control" min="1" max="5" step="1" placeholder="Enter a rating (1-5)" required>
+                        <label for="rating" class="form-label">
+                            {{ __('reviews.rating_label') }}
+                        </label>
+                        <input type="number" name="rating" id="rating" class="form-control" min="1" max="5" step="1" placeholder="{{ __('reviews.rating_placeholder') }}" required>
                     </div>
                     <div class="mb-3">
-                        <label for="comment" class="form-label">Comment</label>
+                        <label for="comment" class="form-label">
+                            {{ __('reviews.comment') }}
+                        </label>
                         <textarea name="comment" id="comment" class="form-control" rows="3" required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-success">Submit Review</button>
+                    <button type="submit" class="btn btn-success">
+                        {{ __('reviews.submit') }}
+                    </button>
                 </form>
             @else
-                <p class="text-muted">You must be logged in to leave a review.</p>
+                <p class="text-muted">
+                    {{ __('reviews.login_to_review') }}
+                </p>
             @endif
 
-            <h3>All Submitted Reviews</h3>
+            <h3>{{ __('reviews.all_reviews') }}</h3>
 
             @forelse ($reviews as $review)
                 <div class="card mb-2">
                     <div class="card-body">
-                        <h5 class="card-title">Rating: {{ $review->rating }}/5</h5>
+                        <h5 class="card-title">{{ __('reviews.review_card.rating') }}: {{ $review->rating }}/5</h5>
                         <p class="card-text">{{ $review->comment }}</p>
-                        <p class="card-text"><small class="text-muted">By {{ $review->user->name }} on {{ $review->created_at->format('d-m-Y') }}</small></p>
+                        <p class="card-text"><small class="text-muted">{{ __('reviews.by') }} {{ $review->user->name }} {{ __('reviews.on') }} {{ $review->created_at->format('d-m-Y') }}</small></p>
 
                         @if(auth()->check() && auth()->id() === $review->user_id)
                             <form action="{{ route('advertisement.advertiser.review.delete', ['advertiser' => $advertisement->user_id, 'review' => $review ]) }}" method="POST" class="mt-2 delete-form">
                                 @csrf
 
-                                <button type="submit" class="btn btn-danger btn-sm delete-button">Delete</button>
+                                <button type="submit" class="btn btn-danger btn-sm delete-button">
+                                    {{ __('reviews.delete') }}
+                                </button>
                             </form>
                         @endif
                     </div>
                 </div>
             @empty
-                <p class="text-muted">No reviews yet.</p>
+                <p class="text-muted">
+                    {{ __('reviews.no_reviews_yet') }}
+                </p>
             @endforelse
 
             {{ $reviews->links() }}

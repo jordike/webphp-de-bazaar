@@ -53,7 +53,7 @@ class CompanyController extends Controller
         $company->save();
 
         return redirect()->route('company.edit', $company)
-            ->with('success', 'Company created successfully.');
+            ->with('success', __('company.success.company_created'));
     }
 
     /**
@@ -111,7 +111,7 @@ class CompanyController extends Controller
         $company->save();
 
         return redirect()->route('company.edit', $company)
-            ->with('success', 'Company updated successfully.');
+            ->with('success', __('company.success.company_updated'));
     }
 
     /**
@@ -148,7 +148,7 @@ class CompanyController extends Controller
         $component->save();
 
         return redirect()->route('company.edit', $company)
-            ->with('success', 'Landing page component added successfully.');
+            ->with('success', __('company.success.landing_page_component_added'));
     }
 
     /**
@@ -214,7 +214,7 @@ class CompanyController extends Controller
         }
 
         return redirect()->route('company.edit', $company)
-            ->with('success', 'Component order updated successfully.');
+            ->with('success', __('company.success.component_order_updated'));
     }
 
     /**
@@ -227,6 +227,6 @@ class CompanyController extends Controller
         $component->delete();
 
         return redirect()->route('company.edit', $company)
-            ->with('success', 'Landing page component deleted successfully.');
+            ->with('success', __('company.success.landing_page_component_deleted'));
     }
 }

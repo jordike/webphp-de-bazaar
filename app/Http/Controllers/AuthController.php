@@ -60,7 +60,7 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (!auth()->attempt($credentials, $request->remember)) {
-            session()->flash('error', 'The provided credentials do not match our records.');
+            session()->flash('error', __('auth.login.error'));
 
             return redirect()->back();
         }

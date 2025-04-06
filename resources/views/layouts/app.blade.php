@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="{{ app()->getLocale() }}">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -63,7 +63,7 @@
 
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('favorites.index') }}">
-                                    Favorites
+                                    {{ __('layout.nav.favorites') }}
                                 </a>
                             </li>
 
@@ -77,7 +77,7 @@
 
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('agenda.index') }}">
-                                    Agenda
+                                    {{ __('layout.nav.agenda') }}
                                 </a>
                             </li>
                         @endauth
@@ -86,12 +86,12 @@
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item dropdown">
                             <button class="nav-link dropdown-toggle btn btn-link" id="locale-dropdown" data-bs-toggle="dropdown" type="button">
-                                {{ __('localization.' . session()->get('locale', 'en')) }}
-                            </a>
+                                {{ __('layout.localization.' . session()->get('locale', 'en')) }}
+                            </button>
 
                             <div id="locale-dropdown" class="dropdown-menu">
-                                <a class="dropdown-item" href="{{ route('locale.switch', [ 'locale' => 'en' ]) }}">English</a>
-                                <a class="dropdown-item" href="{{ route('locale.switch', [ 'locale' => 'nl' ]) }}">Nederlands</a>
+                                <a class="dropdown-item" href="{{ route('locale.switch', [ 'locale' => 'en' ]) }}">{{ __('layout.localization.en') }}</a>
+                                <a class="dropdown-item" href="{{ route('locale.switch', [ 'locale' => 'nl' ]) }}">{{ __('layout.localization.nl') }}</a>
                             </div>
                         </li>
 

@@ -11,26 +11,28 @@
 
     <section>
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2>Your advertisements</h2>
+            <h2>{{ __('advertisements.your_advertisements') }}</h2>
 
-            <a href="{{ route('advertisement.create') }}" class="btn btn-outline-primary">Create New Advertisement</a>
+            <a href="{{ route('advertisement.create') }}" class="btn btn-outline-primary">{{ __('advertisements.create.create') }}</a>
         </div>
 
         <table class="table table-striped table-bordered table-hover table-responsive">
             <thead>
                 <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Date placed</th>
-                    <th>Expiration date</th>
-                    <th>Actions</th>
+                    <th>{{ __('advertisements.form.title') }}</th>
+                    <th>{{ __('advertisements.form.description') }}</th>
+                    <th>{{ __('advertisements.form.price') }}</th>
+                    <th>{{ __('advertisements.form.date_placed') }}</th>
+                    <th>{{ __('advertisements.form.expiration_date') }}</th>
+                    <th>{{ __('advertisements.form.actions') }}</th>
                 </tr>
             </thead>
             <tbody>
                 @if ($advertisements->isEmpty())
                     <tr>
-                        <td colspan="6" class="text-center">No advertisements found.</td>
+                        <td colspan="6" class="text-center">
+                            {{ __('advertisements.overview.no_advertisements') }}
+                        </td>
                     </tr>
                 @else
                     @foreach ($advertisements as $advertisement)
@@ -41,13 +43,17 @@
                             <td>{{ $advertisement->created_at->format('d-m-Y') }}</td>
                             <td>{{ optional($advertisement->expiration_date)->format('d-m-Y') }}</td>
                             <td>
-                                <a href="{{ route('advertisement.edit', $advertisement->id) }}" class="btn btn-secondary btn-sm">Edit</a>
+                                <a href="{{ route('advertisement.edit', $advertisement->id) }}" class="btn btn-secondary btn-sm">
+                                    {{ __('advertisements.edit.edit') }}
+                                </a>
 
                                 <form action="{{ route('advertisement.destroy', $advertisement->id) }}" method="POST" class="d-inline delete-form">
                                     @csrf
                                     @method('DELETE')
 
-                                    <button type="submit" class="btn btn-danger btn-sm delete-button">Delete</button>
+                                    <button type="submit" class="btn btn-danger btn-sm delete-button">
+                                        {{ __('advertisements.edit.delete') }}
+                                    </button>
                                 </form>
                             </td>
                         </tr>
@@ -62,24 +68,24 @@
     <hr />
 
     <section>
-        <h2 class="mb-3">Rented products</h2>
+        <h2 class="mb-3">{{ __('advertisements.rented_products.title') }}</h2>
 
         <table class="table table-striped table-bordered table-hover table-responsive">
             <thead>
                 <tr>
-                    <th>Advertisement</th>
-                    <th>Renter</th>
-                    <th>Price</th>
-                    <th>Start date</th>
-                    <th>End date</th>
-                    <th>Return date</th>
-                    <th>Wear state</th>
+                    <th>{{ __('advertisements.advertisement') }}</th>
+                    <th>{{ __('advertisements.renter') }}</th>
+                    <th>{{ __('advertisements.form.price') }}</th>
+                    <th>{{ __('advertisements.form.start_date') }}</th>
+                    <th>{{ __('advertisements.form.end_date') }}</th>
+                    <th>{{ __('advertisements.form.return_date') }}</th>
+                    <th>{{ __('advertisements.form.wear_state') }}</th>
                 </tr>
             </thead>
             <tbody>
                 @if ($rentedProducts->isEmpty())
                     <tr>
-                        <td colspan="8" class="text-center">No rented products found.</td>
+                        <td colspan="8" class="text-center">{{ __('advertisements.rented_products.no_rented_products') }}</td>
                     </tr>
                 @else
                     @foreach ($rentedProducts as $rentedProduct)

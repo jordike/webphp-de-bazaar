@@ -72,7 +72,7 @@ class ThemeController extends Controller
         $theme->save();
 
         return redirect()->route('company.edit', $company)
-            ->with('success', 'Theme created successfully!');
+            ->with('success', __('theme.success_create'));
     }
 
     /**
@@ -135,7 +135,7 @@ class ThemeController extends Controller
         $theme->save();
 
         return redirect()->route('company.edit', $company)
-            ->with('success', 'Theme updated successfully!');
+            ->with('success', __('theme.success_update'));
     }
 
     /**
@@ -148,7 +148,7 @@ class ThemeController extends Controller
         $theme->delete();
 
         return redirect()->route('company.edit', $company)
-            ->with('success', 'Theme deleted successfully!');
+            ->with('success', __('theme.success_delete'));
     }
 
     public function use(Company $company, ?Theme $theme = null)
@@ -164,7 +164,7 @@ class ThemeController extends Controller
         $company->save();
 
         return redirect()->route('company.edit', $company)
-            ->with('success', 'Theme applied successfully!');
+            ->with('success', __('theme.success_apply'));
     }
 
     public function unuse(Company $company, Theme $theme)
@@ -175,6 +175,6 @@ class ThemeController extends Controller
         $company->save();
 
         return redirect()->route('company.edit', $company)
-            ->with('success', 'Theme unapplied successfully!');
+            ->with('success', __('theme.success_unapply'));
     }
 }

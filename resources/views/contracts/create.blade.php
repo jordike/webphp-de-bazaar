@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Create contract')
+@section('title', __('contracts.create.title'))
 
 @section('content')
     <div class="col-12 col-md-6 col-lg-4">
-        <h1>Create contract</h1>
+        <h1>{{ __('contracts.create.title') }}</h1>
 
         <x-status-messages />
 
@@ -12,7 +12,7 @@
             @csrf
 
             <div class="mb-3">
-                <label for="start_date" class="form-label">Start Date</label>
+                <label for="start_date" class="form-label">{{ __('contracts.create.start_date') }}</label>
                 <input type="date" name="start_date" id="start_date" class="form-control" value="{{ old('start_date') }}" required>
                 @error('start_date')
                     <div class="text-danger">{{ $message }}</div>
@@ -20,15 +20,15 @@
             </div>
 
             <div class="mb-3">
-                <label for="end_date" class="form-label">End Date</label>
+                <label for="end_date" class="form-label">{{ __('contracts.create.end_date') }}</label>
                 <input type="date" name="end_date" id="end_date" class="form-control" value="{{ old('end_date') }}" required>
                 @error('end_date')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
 
-            <button type="submit" class="btn btn-primary">Create Contract</button>
-            <a href="{{ route('companies.edit', $company) }}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">{{ __('contracts.create.create_button') }}</button>
+            <a href="{{ route('companies.edit', $company) }}" class="btn btn-secondary">{{ __('contracts.create.cancel_button') }}</a>
         </form>
     </div>
 @endsection

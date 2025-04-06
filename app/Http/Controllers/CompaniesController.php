@@ -75,7 +75,7 @@ class CompaniesController extends Controller
         $company->update($request->only(['name', 'email', 'phone', 'address', 'city']));
 
         return redirect()->route('companies.index')
-            ->with('success', 'Company updated successfully.');
+            ->with('success', __('companies.messages.company_updated'));
     }
 
     /**
@@ -87,6 +87,6 @@ class CompaniesController extends Controller
         $company->delete();
 
         return redirect()->route('companies.index')
-            ->with('success', 'Company deleted successfully.');
+            ->with('success', __('companies.messages.company_deleted'));
     }
 }

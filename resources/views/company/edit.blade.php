@@ -3,7 +3,7 @@
 @section('title', 'Edit Company')
 
 @section('content')
-    <h1>Edit Company</h1>
+    <h1>{{ __('company.company_details') }}</h1>
 
     <x-status-messages />
 
@@ -11,7 +11,7 @@
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingCompanyDetails">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCompanyDetails" aria-expanded="true" aria-controls="collapseCompanyDetails">
-                    Company Details
+                    {{ __('company.company_details') }}
                 </button>
             </h2>
             <div id="collapseCompanyDetails" class="accordion-collapse collapse show" aria-labelledby="headingCompanyDetails" data-bs-parent="#editCompanyAccordion">
@@ -76,11 +76,11 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary mb-3">
-                            Update
+                            {{ __('company.update') }}
                         </button>
 
                         <a href="{{ route('company.index') }}" class="btn btn-secondary mb-3">
-                            Cancel
+                            {{ __('company.cancel') }}
                         </a>
                     </form>
                 </div>
@@ -90,20 +90,20 @@
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingThemes">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThemes" aria-expanded="false" aria-controls="collapseThemes">
-                    Themes
+                    {{ __('company.themes') }}
                 </button>
             </h2>
             <div id="collapseThemes" class="accordion-collapse collapse" aria-labelledby="headingThemes" data-bs-parent="#editCompanyAccordion">
                 <div class="accordion-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h2>Themes</h2>
+                        <h2>{{ __('company.themes') }}</h2>
 
-                        <a href="{{ route('theme.create', $company) }}" class="btn btn-outline-primary">Add Theme</a>
+                        <a href="{{ route('theme.create', $company) }}" class="btn btn-outline-primary">{{ __('company.add_theme') }}</a>
                     </div>
 
                     @if ($themes->isEmpty())
                         <div class="alert alert-info" role="alert">
-                            No themes available. Please add a theme.
+                            {{ __('company.no_themes_available') }}
                         </div>
                     @else
                         <div class="accordion" id="themesAccordion">
@@ -118,11 +118,11 @@
                                     <div id="collapse{{ $theme->id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ $theme->id }}" data-bs-parent="#themesAccordion">
                                         <div class="accordion-body">
                                             <div class="mb-3">
-                                                <p><strong>Description:</strong> {{ $theme->description }}</p>
+                                                <p><strong>{{ __('theme.description') }}:</strong> {{ $theme->description }}</p>
                                             </div>
 
                                             <div class="mb-3">
-                                                <p><strong>Primary Color:</strong>
+                                                <p><strong>{{ __('theme.primary_color') }}:</strong>
                                                     <span class="badge" style="background-color: {{ $theme->primary_color }}; color: #fff;">
                                                         {{ $theme->primary_color }}
                                                     </span>
@@ -130,7 +130,7 @@
                                             </div>
 
                                             <div class="mb-3">
-                                                <p><strong>Secondary Color:</strong>
+                                                <p><strong>{{ __('theme.secondary_color') }}:</strong>
                                                     <span class="badge" style="background-color: {{ $theme->secondary_color }}; color: #fff;">
                                                         {{ $theme->secondary_color }}
                                                     </span>
@@ -138,7 +138,7 @@
                                             </div>
 
                                             <div class="mb-3">
-                                                <p><strong>Background Color:</strong>
+                                                <p><strong>{{ __('theme.background_color') }}:</strong>
                                                     <span class="badge" style="background-color: {{ $theme->background_color }}; color: #fff;">
                                                         {{ $theme->background_color }}
                                                     </span>
@@ -146,7 +146,7 @@
                                             </div>
 
                                             <div class="mb-3">
-                                                <p><strong>Text Color:</strong>
+                                                <p><strong>{{ __('theme.text_color') }}:</strong>
                                                     <span class="badge" style="background-color: {{ $theme->text_color }}; color: #fff;">
                                                         {{ $theme->text_color }}
                                                     </span>
@@ -154,41 +154,41 @@
                                             </div>
 
                                             <div class="mb-3">
-                                                <p><strong>Font Family:</strong> <span style="font-family: {{ $theme->font_family }};">{{ $theme->font_family }}</span></p>
+                                                <p><strong>{{ __('theme.font_family') }}:</strong> <span style="font-family: {{ $theme->font_family }};">{{ $theme->font_family }}</span></p>
                                             </div>
 
                                             <div class="mb-3">
-                                                <p><strong>Font Size:</strong> <span style="font-size: {{ $theme->font_size }}px;">{{ $theme->font_size }}px</span></p>
+                                                <p><strong>{{ __('theme.font_size')  }}:</strong> <span style="font-size: {{ $theme->font_size }}px;">{{ $theme->font_size }}px</span></p>
                                             </div>
 
                                             @if ($theme->logo_path)
                                                 <div class="mb-3">
-                                                    <p><strong>Logo:</strong></p>
+                                                    <p><strong>{{ __('theme.logo') }}:</strong></p>
                                                     <img src="{{ $theme->getLogoPath() }}" alt="Logo" class="img-fluid rounded shadow-sm logo">
                                                 </div>
                                             @endif
 
                                             <div class="d-flex justify-content-end">
-                                                <a href="{{ route('theme.edit', [$company, $theme]) }}" class="btn btn-outline-secondary btn-sm">Edit</a>
+                                                <a href="{{ route('theme.edit', [$company, $theme]) }}" class="btn btn-outline-secondary btn-sm">{{ __('theme.edit') }}</a>
 
                                                 <form action="{{ route('theme.destroy', [$company, $theme]) }}" method="POST" class="ms-2 delete-form">
                                                     @csrf
                                                     @method('DELETE')
 
-                                                    <button type="submit" class="btn btn-outline-danger btn-sm delete-button">Delete</button>
+                                                    <button type="submit" class="btn btn-outline-danger btn-sm delete-button">{{ __('theme.delete') }}</button>
                                                 </form>
 
                                                 @if ($company->current_theme_id !== $theme->id)
                                                     <form action="{{ route('theme.use', [$company, $theme]) }}" method="POST" class="ms-2">
                                                         @csrf
 
-                                                        <button type="submit" class="btn btn-outline-success btn-sm">Use</button>
+                                                        <button type="submit" class="btn btn-outline-success btn-sm">{{ __('theme.use') }}</button>
                                                     </form>
                                                 @else
                                                     <form action="{{ route('theme.unuse', [$company, $theme]) }}" method="POST" class="ms-2">
                                                         @csrf
 
-                                                        <button type="submit" class="btn btn-outline-success btn-sm">Unuse</button>
+                                                        <button type="submit" class="btn btn-outline-success btn-sm">{{ __('theme.unuse') }}</button>
                                                     </form>
                                                 @endif
                                             </div>
@@ -207,31 +207,31 @@
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingLandingPage">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLandingPage" aria-expanded="false" aria-controls="collapseLandingPage">
-                    Landing Page
+                    {{ __('landing-page.landing_page') }}
                 </button>
             </h2>
             <div id="collapseLandingPage" class="accordion-collapse collapse" aria-labelledby="headingLandingPage" data-bs-parent="#editCompanyAccordion">
                 <div class="accordion-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h2>Landing Page Components</h2>
+                        <h2>{{ __('landing-page.landing_page_components') }}</h2>
 
                         <form action="{{ route('company.landing-page.add', $company) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="input-group">
                                 <select name="type" class="form-select" required>
-                                    <option value="text">Text</option>
-                                    <option value="image">Image</option>
-                                    <option value="highlighted_advertisements">Highlighted Advertisements</option>
+                                    <option value="text">{{ __('landing-page.text') }}</option>
+                                    <option value="image">{{ __('landing-page.image') }}</option>
+                                    <option value="highlighted_advertisements">{{ __('landing-page.highlighted_advertisements') }}</option>
                                 </select>
                                 <input type="text" name="content" class="form-control" placeholder="Content (optional)">
-                                <button type="submit" class="btn btn-primary">Add</button>
+                                <button type="submit" class="btn btn-primary">{{ __('landing-page.add') }}</button>
                             </div>
                         </form>
                     </div>
 
                     @if ($company->landingPageComponents->isEmpty())
                         <div class="alert alert-info" role="alert">
-                            No components available. Please add a component.
+                            {{ __('landing-page.no_components_available') }}
                         </div>
                     @else
                         <ul class="list-group" id="landingPageComponentsList">
@@ -239,11 +239,11 @@
                                 <li class="list-group-item d-flex justify-content-between align-items-center" data-id="{{ $component->id }}">
                                     <span>
                                         @if ($component->type === 'image')
-                                            Image: <img src="{{ asset('storage/' . $component->content) }}" alt="Image" style="max-width: 100px;">
+                                            {{ __('landing-page.image') }}: <img src="{{ asset('storage/' . $component->content) }}" alt="Image" style="max-width: 100px;">
                                         @elseif ($component->type === 'text')
-                                            Text: {{ $component->content }}
+                                            {{ __('landing-page.text') }}: {{ $component->content }}
                                         @elseif ($component->type === 'highlighted_advertisements')
-                                            Highlighted Advertisements
+                                            {{ __('landing-page.highlighted_advertisements') }}
                                         @endif
                                     </span>
                                     <div>
@@ -251,18 +251,18 @@
                                             @csrf
                                             <input type="hidden" name="id" value="{{ $component->id }}">
                                             <input type="hidden" name="direction" value="up">
-                                            <button type="submit" class="btn btn-secondary btn-sm">Up</button>
+                                            <button type="submit" class="btn btn-secondary btn-sm">{{ __('landing-page.up') }}</button>
                                         </form>
                                         <form action="{{ route('company.landing-page.order', $company) }}" method="POST" class="d-inline">
                                             @csrf
                                             <input type="hidden" name="id" value="{{ $component->id }}">
                                             <input type="hidden" name="direction" value="down">
-                                            <button type="submit" class="btn btn-secondary btn-sm">Down</button>
+                                            <button type="submit" class="btn btn-secondary btn-sm">{{ __('landing-page.down') }}</button>
                                         </form>
                                         <form action="{{ route('company.landing-page.delete', [$company, $component]) }}" method="POST" class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm delete-button">Delete</button>
+                                            <button type="submit" class="btn btn-danger btn-sm delete-button">{{ __('landing-page.delete') }}</button>
                                         </form>
                                     </div>
                                 </li>
