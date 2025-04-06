@@ -8,6 +8,7 @@ use App\Models\Bid;
 use App\Models\PurchasedProduct;
 use App\Models\RentedProduct;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class BidController extends Controller
 {
@@ -99,6 +100,8 @@ class BidController extends Controller
 
     public function accept(Request $request, Advertisement $advertisement, Bid $bid)
     {
+        Gate::authorize('processBid', $bid);
+
         $bid->status = 'accepted';
         $bid->save();
 
@@ -124,6 +127,8 @@ class BidController extends Controller
 
     public function reject(Request $request, Advertisement $advertisement, Bid $bid)
     {
+        Gate::authorize('processBid', $bid);
+
         $bid->status = 'rejected';
         $bid->save();
 

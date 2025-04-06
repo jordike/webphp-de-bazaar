@@ -9,6 +9,7 @@ return [
     'profile-dropdown' => [
         'profile' => 'Profile',
         'company' => 'My company',
+        'advertisements' => 'My advertisements',
         'logout' => 'Logout',
     ],
 ];

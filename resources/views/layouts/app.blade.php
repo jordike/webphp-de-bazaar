@@ -53,13 +53,14 @@
                                 {{ __('layout.nav.home') }}
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('advertisement.index') }}">
-                                {{ __('layout.nav.advertisements') }}
-                            </a>
-                        </li>
 
                         @auth
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('advertisement.index') }}">
+                                    {{ __('layout.nav.advertisements') }}
+                                </a>
+                            </li>
+
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('favorites.index') }}">
                                     Favorites
@@ -84,21 +85,21 @@
 
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="locale-dropdown" role="button" data-bs-toggle="dropdown">
+                            <button class="nav-link dropdown-toggle btn btn-link" id="locale-dropdown" data-bs-toggle="dropdown" type="button">
                                 {{ __('localization.' . session()->get('locale', 'en')) }}
                             </a>
 
                             <div id="locale-dropdown" class="dropdown-menu">
-                                <a class="dropdown-item" href="{{ route('locale.switch', 'en') }}">English</a>
-                                <a class="dropdown-item" href="{{ route('locale.switch', 'nl') }}">Nederlands</a>
+                                <a class="dropdown-item" href="{{ route('locale.switch', [ 'locale' => 'en' ]) }}">English</a>
+                                <a class="dropdown-item" href="{{ route('locale.switch', [ 'locale' => 'nl' ]) }}">Nederlands</a>
                             </div>
                         </li>
 
                         @auth
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
+                                <button class="nav-link dropdown-toggle btn btn-link" id="profileDropdown" data-bs-toggle="dropdown" type="button">
                                     {{ auth()->user()->name }}
-                                </a>
+                                </button>
 
                                 <div id="profile-dropdown" class="dropdown-menu dropdown-menu-right">
                                     <a class="dropdown-item" href="#">
@@ -114,6 +115,12 @@
                                             {{ __('layout.profile-dropdown.create-company') }}
                                         </a>
                                     @endisset
+
+                                    @can('create', \App\Models\Advertisement::class)
+                                        <a class="dropdown-item" href="{{ route('advertisement.my-advertisements') }}">
+                                            {{ __('layout.profile-dropdown.advertisements') }}
+                                        </a>
+                                    @endcan
 
                                     <div class="dropdown-divider"></div>
 

@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\Contract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Gate;
 use Spatie\LaravelPdf\Facades\Pdf;
 use Illuminate\Support\Str;
 
@@ -25,6 +26,8 @@ class ContractController extends Controller
      */
     public function create(Company $company)
     {
+        Gate::authorize('create', $company);
+
         return view('contracts.create', [
             'company' => $company,
         ]);
@@ -35,6 +38,8 @@ class ContractController extends Controller
      */
     public function store(Request $request, Company $company)
     {
+        Gate::authorize('create', $company);
+
         $request->validate([
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',
@@ -62,6 +67,8 @@ class ContractController extends Controller
      */
     public function edit(Company $company, Contract $contract)
     {
+        Gate::authorize('update', $contract);
+
         if ($contract->company_id !== $company->id) {
             return redirect()->route('companies.edit', $company->id)
                 ->with('error', 'Contract does not belong to the specified company!');
@@ -78,6 +85,8 @@ class ContractController extends Controller
      */
     public function update(Request $request, Company $company, Contract $contract)
     {
+        Gate::authorize('update', $contract);
+
         if ($contract->company_id !== $company->id) {
             return redirect()->route('companies.edit', $company->id)
                 ->with('error', 'Contract does not belong to the specified company!');
@@ -116,6 +125,8 @@ class ContractController extends Controller
      */
     public function destroy(Company $company, Contract $contract)
     {
+        Gate::authorize('delete', $contract);
+
         if ($contract->company_id !== $company->id) {
             return redirect()->route('companies.edit', $company->id)
                 ->with('error', 'Contract does not belong to the specified company!');
@@ -134,6 +145,8 @@ class ContractController extends Controller
 
     public function download(Company $company, Contract $contract)
     {
+        Gate::authorize('download', $contract);
+
         if ($contract->company_id !== $company->id) {
             return redirect()->route('companies.edit', $company->id)
                 ->with('error', 'Contract does not belong to the specified company!');

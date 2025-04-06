@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\Theme;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 class ThemeController extends Controller
@@ -23,6 +24,8 @@ class ThemeController extends Controller
      */
     public function create(Company $company)
     {
+        Gate::authorize('update', $company);
+
         return view('themes.create', [
             'company' => $company
         ]);
@@ -33,6 +36,8 @@ class ThemeController extends Controller
      */
     public function store(Request $request, Company $company)
     {
+        Gate::authorize('update', $company);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -83,6 +88,8 @@ class ThemeController extends Controller
      */
     public function edit(Company $company, Theme $theme)
     {
+        Gate::authorize('update', $company);
+
         return view('themes.edit', [
             'theme' => $theme,
             'company' => $company,
@@ -94,6 +101,8 @@ class ThemeController extends Controller
      */
     public function update(Request $request, Company $company, Theme $theme)
     {
+        Gate::authorize('update', $company);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -134,6 +143,8 @@ class ThemeController extends Controller
      */
     public function destroy(Company $company, Theme $theme)
     {
+        Gate::authorize('update', $company);
+
         $theme->delete();
 
         return redirect()->route('company.edit', $company)
@@ -142,6 +153,8 @@ class ThemeController extends Controller
 
     public function use(Company $company, ?Theme $theme = null)
     {
+        Gate::authorize('update', $company);
+
         if ($theme == null) {
             $company->currentTheme()->dissociate();
         } else {
@@ -156,6 +169,8 @@ class ThemeController extends Controller
 
     public function unuse(Company $company, Theme $theme)
     {
+        Gate::authorize('update', $company);
+
         $company->currentTheme()->dissociate($theme);
         $company->save();
 
