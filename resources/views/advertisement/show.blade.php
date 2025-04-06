@@ -20,8 +20,28 @@
                 <p class="card-text"><strong>Status:</strong> {{ $advertisement->is_for_rent ? 'For Rent' : 'For Sale' }}</p>
             </div>
             <div class="card-footer text-end">
-                <a href="{{ route('advertisement.edit', $advertisement) }}" class="btn btn-primary">Edit Job</a>
+                <a class="btn btn-secondary" href="{{ route('advertisement.bid.create', $advertisement) }}">
+                    Place bid
+                </a>
+
+                @if ($advertisement->user_id === auth()->id())
+                    <a href="{{ route('advertisement.bid.show-bids', $advertisement) }}" class="btn btn-secondary">View bids</a>
+                    <a href="{{ route('advertisement.edit', $advertisement) }}" class="btn btn-primary">Edit</a>
+
+                    <form action="{{ route('advertisement.destroy', $advertisement) }}" method="POST" class="d-inline delete-form">
+                        @csrf
+                        @method('DELETE')
+
+                        <button type="submit" class="btn btn-danger delete-button">Delete</button>
+                    </form>
+                @endif
             </div>
         </div>
     </div>
 @endsection
+
+@if ($advertisement->user_id === auth()->id())
+    @push('scripts')
+        <script src="{{ asset('js/deleteConfirmation.js') }}"></script>
+    @endpush
+@endif

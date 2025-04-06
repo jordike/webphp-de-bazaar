@@ -53,4 +53,9 @@ class Advertisement extends Model
 
         return asset('storage/' . $this->photo);
     }
+
+    public function bids()
+    {
+        return $this->hasMany(Bid::class);
+    }
 }

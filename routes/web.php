@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BidController;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContractController;
@@ -36,7 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('company', CompanyController::class)->names('company');
     Route::resource('company.theme', ThemeController::class)->names('theme');
     Route::post('company/{company}/theme/{theme}/use', [ThemeController::class, 'use'])->name('theme.use');
-    Route::post('company/{company}/theme/{theme}/unue', [ThemeController::class, 'unuse'])->name('theme.unuse');
+    Route::post('company/{company}/theme/{theme}/unuse', [ThemeController::class, 'unuse'])->name('theme.unuse');
 
     Route::resource('companies', CompaniesController::class)->names('companies');
     Route::resource('companies.contracts', ContractController::class)->names('contracts');
@@ -49,6 +50,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/agenda', [AgendaController::class, 'index'])->name('agenda.index');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::resource('advertisement.bid', BidController::class)->names('advertisement.bid');
+    Route::patch('advertisement/{advertisement}/bid/accept/{bid}', [BidController::class, 'accept'])->name('advertisement.bid.accept');
+    Route::patch('advertisement/{advertisement}/bid/reject/{bid}', [BidController::class, 'reject'])->name('advertisement.bid.reject');
+    Route::get('advertisement/{advertisement}/bids', [BidController::class, 'showBids'])->name('advertisement.bid.show-bids');
 });
 
 Route::get('/locale/{locale}', [LocaleController::class, '__invoke'])->name('locale.switch');
