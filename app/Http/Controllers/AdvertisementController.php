@@ -23,11 +23,11 @@ class AdvertisementController extends Controller
         $forRent = Advertisement::where('user_id', $user->id)
             ->where('is_for_rent', true)
             ->latest()
-            ->get();
+            ->paginate(10);
         $forSale = Advertisement::where('user_id', $user->id)
             ->where('is_for_rent', false)
             ->latest()
-            ->get();
+            ->paginate(10);
 
         return view('advertisement.index', [
             'forRent' => $forRent,
@@ -105,9 +105,12 @@ class AdvertisementController extends Controller
         $result = $writer->write($qrCode);
         $qrCodeDataUrl = $result->getDataUri();
 
+        $reviews = $advertisement->reviews()->with('user')->latest()->paginate(5);
+
         return view('advertisement.show', [
             'advertisement' => $advertisement,
-            'qrCodeDataUrl' => $qrCodeDataUrl
+            'qrCodeDataUrl' => $qrCodeDataUrl,
+            'reviews' => $reviews,
         ]);
     }
 

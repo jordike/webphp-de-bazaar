@@ -25,6 +25,7 @@
                             </div>
 
                             <button type="submit" class="btn btn-primary">Submit Bid</button>
+                            <a href="{{ route('advertisement.show', $advertisement) }}" class="btn btn-secondary">Cancel</a>
                         </form>
                     </div>
                 </div>

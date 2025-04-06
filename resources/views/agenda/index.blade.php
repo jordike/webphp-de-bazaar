@@ -74,7 +74,6 @@
                     <th>End date</th>
                     <th>Return date</th>
                     <th>Wear state</th>
-                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -92,16 +91,6 @@
                             <td>{{ $rentedProduct->end_date->format('d-m-Y') }}</td>
                             <td>{{ optional($rentedProduct->return_date)->format('d-m-Y') }}</td>
                             <td>{{ $rentedProduct->getWearState() }}</td>
-                            <td>
-                                <a href="{{ route('advertisement.rent.edit', [ 'advertisement' => $rentedProduct->advertisement, 'rent' => $rentedProduct ]) }}" class="btn btn-secondary btn-sm">Edit</a>
-
-                                <form action="{{ route('advertisement.rent.destroy', [ 'advertisement' => $rentedProduct->advertisement, 'rent' => $rentedProduct ]) }}" method="POST" class="d-inline delete-form">
-                                    @csrf
-                                    @method('DELETE')
-
-                                    <button type="submit" class="btn btn-danger btn-sm delete-button">Delete</button>
-                                </form>
-                            </td>
                         </tr>
                     @endforeach
                 @endif

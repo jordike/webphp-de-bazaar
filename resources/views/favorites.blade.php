@@ -14,6 +14,8 @@
                     <x-advertisement :advertisement="$favorite->advertisement" />
                 @endforeach
             </div>
+
+            {{ $favorites->links() }}
         @endif
     </div>
 @endsection

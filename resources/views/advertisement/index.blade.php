@@ -35,6 +35,8 @@
             @empty
                 <p class="text-muted">No advertisements for rent.</p>
             @endforelse
+
+            {{ $forRent->links() }}
         </div>
     </section>
 
@@ -52,6 +54,8 @@
             @empty
                 <p class="text-muted">No advertisements for sale.</p>
             @endforelse
+
+            {{ $forSale->links() }}
         </div>
     </section>
 @endsection
