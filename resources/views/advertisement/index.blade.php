@@ -19,21 +19,21 @@
     </div>
 
     {{-- FOR RENT --}}
-    <h3 class="mb-3">For Rent {{ $forRent->count() }}/4</h3>
-    <div class="row">
+    <h3 class="mb-3">For Rent ({{ $forRent->count() }}/4)</h3>
+    <div class="row g-4">
         @forelse ($forRent as $ad)
-            <div class="col-md-4 mb-4">
-                <a href="/advertisement/{{ $ad['id'] }}" class="text-decoration-none">
-                    <div class="card h-100 shadow-sm">
+            <div class="col-md-4">
+                <a href="{{ url('/advertisement/' . $ad->id) }}" class="text-decoration-none text-dark">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden transition" style="transition: all 0.3s ease;">
                         @if ($ad->photo)
-                            <img src="{{ Storage::url($ad->photo) }}" class="card-img-top" alt="{{ $ad->title }}">
+                            <img src="{{ Storage::url($ad->photo) }}" class="card-img-top object-fit-cover" style="height: 200px;" alt="{{ $ad->title }}">
                         @else
-                            <img src="https://via.placeholder.com/300x200.png?text=No+Image" class="card-img-top" alt="No image available">
+                            <img src="https://via.placeholder.com/400x200.png?text=No+Image" class="card-img-top" alt="No image available">
                         @endif
                         <div class="card-body">
-                            <h5 class="card-title">{{ $ad->title }}</h5>
-                            <p class="card-text text-truncate">{{ $ad->description }}</p>
-                            <p class="card-text"><strong>Price:</strong> €{{ $ad->price ?? 'N/A' }}</p>
+                            <h5 class="card-title fw-semibold">{{ $ad->title }}</h5>
+                            <p class="card-text text-muted small">{{ Str::limit($ad->description, 100) }}</p>
+                            <p class="card-text fw-bold text-primary">€{{ number_format($ad->price, 2) }}</p>
                         </div>
                     </div>
                 </a>
@@ -44,21 +44,21 @@
     </div>
 
     {{-- FOR SALE --}}
-    <h3 class="mb-3 mt-5">For Sale {{ $forSale->count() }}/4    </h3>
-    <div class="row">
+    <h3 class="mb-3 mt-5">For Sale ({{ $forSale->count() }}/4)</h3>
+    <div class="row g-4">
         @forelse ($forSale as $ad)
-            <div class="col-md-4 mb-4">
-                <a href="/advertisement/{{ $ad['id'] }}" class="text-decoration-none">
-                    <div class="card h-100 shadow-sm">
+            <div class="col-md-4">
+                <a href="{{ url('/advertisement/' . $ad->id) }}" class="text-decoration-none text-dark">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden transition" style="transition: all 0.3s ease;">
                         @if ($ad->photo)
-                            <img src="{{ Storage::url($ad->photo) }}" class="card-img-top" alt="{{ $ad->title }}">
+                            <img src="{{ Storage::url($ad->photo) }}" class="card-img-top object-fit-cover" style="height: 200px;" alt="{{ $ad->title }}">
                         @else
-                            <img src="https://via.placeholder.com/300x200.png?text=No+Image" class="card-img-top" alt="No image available">
+                            <img src="https://via.placeholder.com/400x200.png?text=No+Image" class="card-img-top" alt="No image available">
                         @endif
                         <div class="card-body">
-                            <h5 class="card-title">{{ $ad->title }}</h5>
-                            <p class="card-text text-truncate">{{ $ad->description }}</p>
-                            <p class="card-text"><strong>Price:</strong> €{{ $ad->price ?? 'N/A' }}</p>
+                            <h5 class="card-title fw-semibold">{{ $ad->title }}</h5>
+                            <p class="card-text text-muted small">{{ Str::limit($ad->description, 100) }}</p>
+                            <p class="card-text fw-bold text-success">€{{ number_format($ad->price, 2) }}</p>
                         </div>
                     </div>
                 </a>

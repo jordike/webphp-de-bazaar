@@ -27,13 +27,19 @@ class Advertisement extends Model
         parent::boot();
 
         static::creating(function ($advertisement) {
-            $advertisement->expires_at = now()->addDays(30);
+            $advertisement->expiration_date = now()->addDays(30);
         });
     }
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+
+    public function relatedAdvertisements()
+    {
+        return $this->belongsToMany(Advertisement::class, 'advertisement_advertisement', 'advertisement_id', 'related_advertisement_id');
     }
 
     public function favorites()

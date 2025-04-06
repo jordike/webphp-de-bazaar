@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Advertisement;
 use App\Http\Controllers\Controller;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class AdvertisementController extends Controller
@@ -35,7 +38,10 @@ class AdvertisementController extends Controller
      */
     public function create()
     {
-        return view('advertisement.create');
+        $user = Auth::user();
+
+        $allAdvertisements = Advertisement::all()->where('user_id', $user->id);
+        return view('advertisement.create', compact('allAdvertisements'));
     }
 
     /**
@@ -48,11 +54,12 @@ class AdvertisementController extends Controller
             'description' => 'required|string',
             'is_for_rent' => 'required|boolean',
             'price' => 'required|numeric',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validates image file
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'related_ads' => 'nullable|array', 
         ]);
 
         // TODO: Ensure user is authenticated (check if user is logged in)
-        $userId = Auth::id(); // Get the authenticated user's ID
+        $userId = Auth::id();
 
         $adCount = Advertisement::where('user_id', $userId)
                             ->where('is_for_rent', $request->is_for_rent)
@@ -62,17 +69,25 @@ class AdvertisementController extends Controller
             return redirect()->back()->with('error', 'You can only create up to 4 advertisements in this category.');
         }
 
-        // Handle photo upload if it exists
         $photoPath = null;
-        if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
-            $photoPath = $request->file('photo')->store('public/advertisements'); // Store the photo
-        }
-
-        Advertisement::create([
-            ...$validated,
+    if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
+        $photo = $request->file('photo');
+        $filename = Str::uuid() . '.' . $photo->getClientOriginalExtension();
+        $photoPath = $photo->storeAs('advertisements', $filename, 'public');
+    }
+        $advertisement = Advertisement::create([
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'price' => $validated['price'],
+            'is_for_rent' => $validated['is_for_rent'],
             'user_id' => $userId,
             'photo' => $photoPath,
+            'expiration_date' => now()->addDays(30),
         ]);
+
+        if ($request->has('related_ads')) {
+            $advertisement->relatedAdvertisements()->sync($request->related_ads); // sync related ads
+        }
 
         return redirect('/advertisement')->with('success', 'Advertisement created successfully!');
     }
@@ -82,16 +97,29 @@ class AdvertisementController extends Controller
      */
     public function show(Advertisement $advertisement)
     {
-        return view('advertisement.show', compact('advertisement'));
-    }
+        $adUrl = route('advertisement.show', ['advertisement' => $advertisement->id]);
+
+        $writer = new PngWriter();
+
+        
+        $qrCode = new QrCode($adUrl);
+        $result = $writer->write($qrCode);
+
+        $qrCodeDataUrl = $result->getDataUri();
+
+    return view('advertisement.show', compact('advertisement', 'qrCodeDataUrl'));    }
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Advertisement $advertisement)
     {
-        return view('advertisement.edit', compact('advertisement'));
-    }
+        $user = Auth::user();
+
+        $allAdvertisements = Advertisement::where('user_id', $user->id)->get();
+        $relatedAds = $advertisement->relatedAdvertisements->pluck('id')->toArray();
+        return view('advertisement.edit', compact('advertisement', 'allAdvertisements', 'relatedAds'));
+ }
 
     /**
      * Update the specified resource in storage.
@@ -109,26 +137,34 @@ class AdvertisementController extends Controller
         $userId = Auth::id();
 
         $adCount = Advertisement::where('user_id', $userId)
-        ->where('is_for_rent', $request->is_for_rent)
-        ->count();
+            ->where('is_for_rent', $request->is_for_rent)
+            ->count();
 
         if ($adCount >= 4) {
-        return redirect()->back()->with('error', 'You can only create up to 4 advertisements in this category.');
+            return redirect()->back()->with('error', 'You can only create up to 4 advertisements in this category.');
         }
 
-        // Update the advertisement with validated data
-        $advertisement->update($validated);
+        $advertisement->fill($validated);
 
         // Handle the photo upload if a new one is uploaded
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
-            $photoPath = $request->file('photo')->store('public/advertisements');
+            $photo = $request->file('photo');
+            $filename = Str::uuid() . '.' . $photo->getClientOriginalExtension();
+    
+            $photoPath = $photo->storeAs('advertisements', $filename, 'public');
+    
             $advertisement->photo = $photoPath;
-            $advertisement->save();
         }
+    
+        $advertisement->save();
 
-        return redirect('/advertisement/' . $advertisement->id)
-        ->with('success', 'Advertisement updated successfully!');
+        if ($request->has('related_ads')) {
+            $advertisement->relatedAdvertisements()->sync($request->related_ads); // Sync related ads
         }
+    
+        return redirect('/advertisement/' . $advertisement->id)
+            ->with('success', 'Advertisement updated successfully!');
+    }
 
     /**
      * Remove the specified resource from storage.
