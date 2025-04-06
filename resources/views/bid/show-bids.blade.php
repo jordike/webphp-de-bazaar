@@ -6,17 +6,17 @@
     <x-status-messages />
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Bids for advertisement: {{ $advertisement->title }}</h1>
+        <h1>{{ __('bid.bids_for_advertisement') }}: {{ $advertisement->title }}</h1>
 
         <div class="d-flex gap-2">
             @if ($advertisement->user_id !== auth()->id())
                 <a class="btn btn-secondary" href="{{ route('advertisement.bid.create', $advertisement) }}">
-                    Place bid
+                    {{ __('bid.place_bid') }}
                 </a>
             @endif
 
             <a class="btn btn-primary" href="{{ route('advertisement.show', $advertisement) }}">
-                Back to advertisement
+                {{ __('bid.back_to_advertisement') }}
             </a>
         </div>
     </div>
@@ -24,11 +24,11 @@
     <table class="table table-bordered table-striped table-hover table-responsive">
         <thead>
             <tr>
-                <th>User</th>
-                <th>Amount</th>
-                <th>Status</th>
+                <th>{{ __('bid.user') }}</th>
+                <th>{{ __('bid.amount') }}</th>
+                <th>{{ __('bid.status') }}</th>
                 @if ($advertisement->user_id === auth()->id())
-                    <th>Actions</th>
+                    <th>{{ __('bid.actions') }}</th>
                 @endif
             </tr>
         </thead>
@@ -36,7 +36,7 @@
             @if ($bids->isEmpty())
                 <tr>
                     <td colspan="{{ $advertisement->user_id === auth()->id() ? 4 : 3 }}" class="text-center text-muted">
-                        No bids available for this advertisement.
+                        {{ __('bid.no_bids_available') }}
                     </td>
                 </tr>
             @else
@@ -47,7 +47,7 @@
                         <td>
                             <strong>
                                 <span class="{{ $bid->status === 'accepted' ? 'text-success' : ($bid->status === 'rejected' ? 'text-danger' : 'text-warning') }}">
-                                    {{ ucfirst($bid->status) }}
+                                    {{ ucfirst(__($bid->status)) }}
                                 </span>
                             </strong>
                         </td>
@@ -58,17 +58,19 @@
                                         @csrf
                                         @method('PATCH')
 
-                                        <button type="submit" class="btn btn-success">Accept</button>
+                                        <button type="submit" class="btn btn-success">{{ __('bid.accept') }}</button>
                                     </form>
 
                                     <form action="{{ route('advertisement.bid.reject', [ 'advertisement' => $bid->advertisement, 'bid' => $bid ]) }}" method="POST" style="display: inline;">
                                         @csrf
                                         @method('PATCH')
 
-                                        <button type="submit" class="btn btn-danger">Reject</button>
+                                        <button type="submit" class="btn btn-danger">{{ __('bid.reject') }}</button>
                                     </form>
                                 @else
-                                    <span class="text-muted">No actions available</span>
+                                    <span class="text-muted">
+                                        {{ __('bid.no_actions_available') }} }}
+                                    </span>
                                 @endif
                             </td>
                         @endif
