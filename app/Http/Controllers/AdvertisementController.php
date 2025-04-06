@@ -64,7 +64,7 @@ class AdvertisementController extends Controller
             ->count();
 
         if ($adCount >= 4) {
-            return redirect()->back()->with('error', 'You can only create up to 4 advertisements in this category.');
+            return redirect()->back()->with('error', __('advertisements.messages.max_four_ads_per_category'));
         }
 
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
@@ -88,7 +88,7 @@ class AdvertisementController extends Controller
         }
 
         return redirect()->route('advertisement.index')
-            ->with('success', 'Advertisement created successfully!');
+            ->with('success', __('advertisements.messages.advertisement_created'));
     }
 
     /**
@@ -150,7 +150,7 @@ class AdvertisementController extends Controller
 
         if ($adCount >= 4) {
             return redirect()->back()
-                ->with('error', 'You can only create up to 4 advertisements in this category.');
+                ->with('error', __('advertisements.messages.max_four_ads_per_category'));
         }
 
         $advertisement->fill($validated);
@@ -170,7 +170,7 @@ class AdvertisementController extends Controller
         }
 
         return redirect()->route('advertisement.show', $advertisement->id)
-            ->with('success', 'Advertisement updated successfully!');
+            ->with('success', __('advertisements.messages.advertisement_updated'));
     }
 
     /**
@@ -183,7 +183,7 @@ class AdvertisementController extends Controller
         $advertisement->delete();
 
         return redirect()->route('advertisement.index')
-            ->with('success', 'Advertisement deleted successfully!');
+            ->with('success', __('advertisements.messages.advertisement_deleted'));
     }
 
     /**
@@ -216,7 +216,7 @@ class AdvertisementController extends Controller
                 $typeName = $type === 'for_rent' ? 'rental' : 'regular';
 
                 return redirect()->back()
-                    ->with('error', "You have reached the limit of 4 {$typeName} advertisements. Please delete an existing advertisement before adding more.");
+                    ->with('error', __('advertisements.messages.max_of_category_reached', ['type' => $typeName]));
             }
         }
 
@@ -227,7 +227,7 @@ class AdvertisementController extends Controller
         }
 
         return redirect()->route('advertisement.index')
-            ->with('success', 'Advertisements created successfully from CSV.');
+            ->with('success', __('advertisements.messages.advertisements_created_from_csv'));
     }
 
     public function review(Request $request, Advertisement $advertisement)
@@ -245,7 +245,7 @@ class AdvertisementController extends Controller
         ]);
 
         return redirect()->back()
-            ->with('success', 'Review submitted successfully!');
+            ->with('success', __('reviews.messages.review_submitted'));
     }
 
     public function advertiser(User $advertiser)
@@ -273,20 +273,20 @@ class AdvertisementController extends Controller
         ]);
 
         return redirect()->back()
-            ->with('success', 'Review submitted successfully!');
+            ->with('success', __('reviews.messages.review_submitted'));
     }
 
     public function deleteReview(Request $request, User $advertiser, Review $review)
     {
         if ($review->user_id != auth()->id()) {
             return redirect()->back()
-                ->with('error', 'You are not authorized to delete this review.');
+                ->with('error', __('reviews.messages.unauthorized_to_delete'));
         }
 
         $review->delete();
 
         return redirect()->back()
-            ->with('success', 'Review deleted successfully!');
+            ->with('success', __('reviews.messages.review_deleted'));
     }
 
     public function myAdvertisements()
