@@ -62,4 +62,9 @@ class RentController extends Controller
     {
         //
     }
+
+    public function return()
+    {
+
+    }
 }
