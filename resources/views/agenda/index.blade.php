@@ -31,7 +31,7 @@
                 <tr>
                     <td>{{ $advertisement->title }}</td>
                     <td>{{ $advertisement->description }}</td>
-                    <td>{{ $advertisement->price }}</td>
+                    <td>{{ number_format($advertisement->price, 2, ',', '.') }}</td>
                     <td>{{ $advertisement->created_at->format('d-m-Y') }}</td>
                     <td>{{ optional($advertisement->expiration_date)->format('d-m-Y') }}</td>
                     <td>
