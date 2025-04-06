@@ -1,4 +1,4 @@
-<a href="{{ route('advertisement.show', $advertisement) }}" class="text-decoration-none">
+<a href="{{ route('advertisement.show', $advertisement) }}" class="text-decoration-none text-black">
     <div class="card">
         <div class="card-header">
             <h5 class="card-title">{{ $advertisement->title }}</h5>

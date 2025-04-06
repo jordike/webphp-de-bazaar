@@ -7,7 +7,29 @@ use Illuminate\Database\Eloquent\Model;
 class Advertisement extends Model
 {
 
-    protected $fillable = ['title', 'description', 'is_for_rent', 'price', 'photo', 'user_id'];
+    protected $fillable = [
+        'title',
+        'description',
+        'is_for_rent',
+        'price',
+        'photo',
+        'user_id',
+        'expiration_date'
+    ];
+
+    protected $casts = [
+        'is_for_rent' => 'boolean',
+        'expiration_date' => 'date',
+    ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($advertisement) {
+            $advertisement->expires_at = now()->addDays(30);
+        });
+    }
 
     public function user()
     {
