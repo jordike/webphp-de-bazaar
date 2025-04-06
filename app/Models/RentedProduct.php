@@ -21,6 +21,7 @@ class RentedProduct extends Model
         'end_date' => 'date',
         'return_date' => 'date',
         'return_wear_state' => 'integer',
+        'price' => 'decimal:2',
     ];
 
     public function advertisement()
@@ -40,5 +41,10 @@ class RentedProduct extends Model
         }
 
         return $this->return_wear_state . "%";
+    }
+
+    public function isReturned()
+    {
+        return $this->return_date !== null;
     }
 }
