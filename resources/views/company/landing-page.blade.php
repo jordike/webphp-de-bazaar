@@ -18,8 +18,8 @@
                     </div>
                 @elseif ($component->type === 'highlighted_advertisements')
                     <div class="highlighted-advertisements bg-light p-3 rounded">
-                        <h2 class="text-primary">Highlighted Advertisements</h2>
-                        <p class="text-muted">Check out our featured advertisements!</p>
+                        <h2 class="text-primary">{{ __('landing-page.highlighted_advertisements') }}</h2>
+                        <p class="text-muted">{{ __('landing-page.check_out') }}</p>
 
                         <div class="d-flex flex-row gap-3 flex-wrap">
                             @foreach ($featuredAdvertisements as $advertisement)
