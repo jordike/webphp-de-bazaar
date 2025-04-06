@@ -10,7 +10,7 @@
             </div>
 
             <p class="card-text text-truncate">{{ $advertisement->description }}</p>
-            <p class="card-text"><strong>Price:</strong> €{{ $advertisement->price ?? 'N/A' }}</p>
+            <p class="card-text"><strong>Price:</strong> €{{ number_format($advertisement->price ?? 0, 2, ',', '.') }}</p>
         </div>
 
         <div class="card-footer text-center">
