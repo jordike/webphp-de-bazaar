@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="container mt-4">
-        <div class="card">
+        <div class="card mb-3">
             <div class="card-header">
                 <h1 class="card-title">{{ $advertisement->title }}</h1>
             </div>
@@ -32,6 +32,17 @@
                         <button type="submit" class="btn btn-danger delete-button">Delete</button>
                     </form>
                 @endif
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <h2>Related Advertisements</h2>
+            <div class="d-flex flex-wrap gap-3">
+                @forelse ($advertisement->relatedAdvertisements as $related)
+                    <x-advertisement :advertisement="$related" />
+                @empty
+                    <p>No related advertisements found.</p>
+                @endforelse
             </div>
         </div>
     </div>

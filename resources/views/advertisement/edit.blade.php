@@ -66,6 +66,21 @@
                                 @enderror
                             </div>
 
+                            <div class="mb-3">
+                                <label for="related_ads" class="form-label">Related Advertisements:</label>
+                                <select id="related_ads" name="related_ads[]" class="form-select" multiple>
+                                    @foreach($allAdvertisements as $advertisement)
+                                        <option value="{{ $advertisement->id }}" {{ in_array($advertisement->id, old('related_ads', [])) ? 'selected' : '' }}>
+                                            {{ $advertisement->title }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <small class="form-text text-muted">Hold down the Ctrl (Windows) or Command (Mac) button to select multiple options.</small>
+                                @error('related_ads')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-success">Update Advertisement</button>
                             </div>

@@ -38,10 +38,11 @@ class AdvertisementController extends Controller
      */
     public function create()
     {
-        $user = Auth::user();
+        $allAdvertisements = Advertisement::all()->where('user_id', auth()->id());
 
-        $allAdvertisements = Advertisement::all()->where('user_id', $user->id);
-        return view('advertisement.create', compact('allAdvertisements'));
+        return view('advertisement.create', [
+            'allAdvertisements' => $allAdvertisements,
+        ]);
     }
 
     /**
@@ -98,14 +99,14 @@ class AdvertisementController extends Controller
         $adUrl = route('advertisement.show', ['advertisement' => $advertisement->id]);
 
         $writer = new PngWriter();
-
-
         $qrCode = new QrCode($adUrl);
         $result = $writer->write($qrCode);
-
         $qrCodeDataUrl = $result->getDataUri();
 
-        return view('advertisement.show', compact('advertisement', 'qrCodeDataUrl'));
+        return view('advertisement.show', [
+            'advertisement' => $advertisement,
+            'qrCodeDataUrl' => $qrCodeDataUrl
+        ]);
     }
 
     /**
@@ -113,11 +114,14 @@ class AdvertisementController extends Controller
      */
     public function edit(Advertisement $advertisement)
     {
-        $user = Auth::user();
-
-        $allAdvertisements = Advertisement::where('user_id', $user->id)->get();
+        $allAdvertisements = Advertisement::where('user_id', auth()->id())->get();
         $relatedAds = $advertisement->relatedAdvertisements->pluck('id')->toArray();
-        return view('advertisement.edit', compact('advertisement', 'allAdvertisements', 'relatedAds'));
+
+        return view('advertisement.edit', [
+            'advertisement' => $advertisement,
+            'allAdvertisements' => $allAdvertisements,
+            'relatedAds' => $relatedAds,
+        ]);
     }
 
     /**
