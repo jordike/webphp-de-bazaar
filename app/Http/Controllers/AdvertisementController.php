@@ -10,6 +10,7 @@ use App\Models\User;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 class AdvertisementController extends Controller
@@ -40,6 +41,8 @@ class AdvertisementController extends Controller
      */
     public function create()
     {
+        Gate::authorize('create');
+
         $allAdvertisements = Advertisement::all()->where('user_id', auth()->id());
 
         return view('advertisement.create', [
@@ -52,6 +55,8 @@ class AdvertisementController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('create');
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -119,6 +124,8 @@ class AdvertisementController extends Controller
      */
     public function edit(Advertisement $advertisement)
     {
+        Gate::authorize('update', $advertisement);
+
         $allAdvertisements = Advertisement::where('user_id', auth()->id())->get();
         $relatedAds = $advertisement->relatedAdvertisements->pluck('id')->toArray();
 
@@ -134,6 +141,8 @@ class AdvertisementController extends Controller
      */
     public function update(Request $request, Advertisement $advertisement)
     {
+        Gate::authorize('update', $advertisement);
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -176,6 +185,8 @@ class AdvertisementController extends Controller
      */
     public function destroy(Advertisement $advertisement)
     {
+        Gate::authorize('delete', $advertisement);
+
         $advertisement->delete();
 
         return redirect()->route('advertisement.index')
@@ -187,6 +198,8 @@ class AdvertisementController extends Controller
      */
     public function uploadCsv(Request $request)
     {
+        Gate::authorize('create');
+
         $request->validate([
             'csvFile' => 'required|file|mimes:csv,txt|max:2048',
         ]);

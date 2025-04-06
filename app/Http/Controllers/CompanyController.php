@@ -23,7 +23,7 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        Gate::authorize('create', Company::class);
+        Gate::authorize('create');
 
         return view('company.create');
     }
@@ -33,7 +33,7 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('create', Company::class);
+        Gate::authorize('create');
 
         $request->validate([
             'name' => 'required|string|max:255',
