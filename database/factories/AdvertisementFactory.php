@@ -12,13 +12,13 @@ class AdvertisementFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => User::factory(),
             'title' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
-            'price' => $this->faker->randomFloat(2, 10, 1000),
-            'photo' => 'default.jpg', // important!
-            'expiration_date' => now()->addMonth(),
             'is_for_rent' => $this->faker->boolean,
-    ];
+            'price' => $this->faker->randomFloat(2, 10, 1000),
+            'photo' => $this->faker->imageUrl,
+            'user_id' => \App\Models\User::factory(),
+            'expiration_date' => $this->faker->dateTimeBetween('+1 week', '+1 month'),
+        ];
     }
 }

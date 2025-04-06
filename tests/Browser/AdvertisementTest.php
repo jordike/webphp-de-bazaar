@@ -1,57 +1,68 @@
 <?php
-namespace Tests\Feature;
+namespace Tests\Browser;
 
-use Tests\TestCase;
+use Laravel\Dusk\Browser;
+use Tests\DuskTestCase;
 use App\Models\User;
 use App\Models\Advertisement;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class AdvertisementTest extends TestCase
+class AdvertisementTest extends DuskTestCase
 {
-    use RefreshDatabase;
+    public function testUserCanViewAdvertisements()
+    {
+        $this->browse(function (Browser $browser) {
+            Advertisement::factory()->create(['title' => 'Sample Advertisement']);
+
+            $browser->loginAs(User::factory()->create())
+                    ->visit('/advertisements/advertisement')
+                    ->screenshot('advertisement-list')  // Debugging screenshot
+                    ->assertSee('Sample Advertisement');
+        });
+    }
 
     public function testUserCanCreateAdvertisement()
     {
-        /** @var \App\Models\User $user */
-        $user = User::factory()->create();
-        $response = $this->actingAs($user)->post('/advertisement', [
-            'title' => 'Test Advertisement',
-            'description' => 'This is a test advertisement.',
-            'price' => 100,
-            '_token' => csrf_token(), // Include CSRF token if needed
-        ]);
-        $response->assertRedirect('/advertisement');
-        $this->assertDatabaseHas('advertisements', ['title' => 'Test Advertisement']);
+        $this->browse(function (Browser $browser) {
+            $user = User::factory()->create();
+
+            $browser->loginAs($user)
+                    ->visit('/advertisements/advertisement/create')
+                    ->type('title', 'Test Advertisement')
+                    ->type('description', 'This is a test advertisement.')
+                    ->type('price', '100')
+                    ->attach('photo', __DIR__ . '/test.jpg') // Ensure a valid file path
+                    ->press('Create Advertisement')
+                    ->assertPathIs('/advertisements/advertisement')
+                    ->assertSee('Test Advertisement');
+        });
     }
 
-    public function testUserCanUpdateAdvertisement()
+    public function testUserCanEditAdvertisement()
     {
-        /** @var \App\Models\User $user */
-        $user = User::factory()->create();
-        $advertisement = Advertisement::factory()->create(['user_id' => $user->id]);
+        $this->browse(function (Browser $browser) {
+            $user = User::factory()->create();
+            $advertisement = Advertisement::factory()->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->put("/advertisement/{$advertisement->id}", [
-            'title' => 'Updated Advertisement',
-            'description' => $advertisement->description,
-            'price' => $advertisement->price,
-            '_token' => csrf_token(), // Include CSRF token if needed
-            '_method' => 'PUT',
-        ]);
-        $response->assertRedirect('/advertisement');
-        $this->assertDatabaseHas('advertisements', ['title' => 'Updated Advertisement']);
+            $browser->loginAs($user)
+                    ->visit("/advertisements/advertisement/{$advertisement->id}/edit")
+                    ->type('title', 'Updated Advertisement')
+                    ->press('Update Advertisement')
+                    ->assertPathIs('/advertisements/advertisement')
+                    ->assertSee('Updated Advertisement');
+        });
     }
 
     public function testUserCanDeleteAdvertisement()
     {
-        /** @var \App\Models\User $user */
-        $user = User::factory()->create();
-        $advertisement = Advertisement::factory()->create(['user_id' => $user->id]);
+        $this->browse(function (Browser $browser) {
+            $user = User::factory()->create();
+            $advertisement = Advertisement::factory()->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->delete("/advertisement/{$advertisement->id}", [
-            '_token' => csrf_token(), // Include CSRF token if needed
-            '_method' => 'DELETE',
-        ]);
-        $response->assertRedirect('/advertisement');
-        $this->assertDatabaseMissing('advertisements', ['id' => $advertisement->id]);
+            $browser->loginAs($user)
+                    ->visit('/advertisements/advertisement')
+                    ->screenshot('advertisement-delete') // Debugging screenshot
+                    ->press("@delete-advertisement-{$advertisement->id}")
+                    ->assertDontSee($advertisement->title);
+        });
     }
 }

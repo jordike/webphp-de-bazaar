@@ -14,8 +14,11 @@ class ExampleTest extends DuskTestCase
     public function testBasicExample(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit('/')
-                    ->assertSee('Laravel');
+            $browser->visit('http://localhost:8000')
+            ->screenshot('test-screenshot')  // Takes a screenshot for debugging
+            ->waitForText('De Bazaar')
+            ->assertSee('De Bazaar');
+
         });
     }
 }
