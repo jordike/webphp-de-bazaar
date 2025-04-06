@@ -80,6 +80,14 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                         @enderror                                     
                                     </div>
+                                    <div class="mb-3">
+                                        <label for="related_ads" class="form-label">Related Advertisements:</label>
+                                        <select class="form-select" name="related_ads[]" id="related_ads" multiple>
+                                            @foreach ($allAdvertisements as $ad)
+                                                <option value="{{ $ad->id }}">{{ $ad->title }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>                                    
                                     <div class="row">
                                         <div class="col-md-12">
                                             <input type="submit"

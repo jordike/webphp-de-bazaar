@@ -37,7 +37,11 @@ class AdvertisementController extends Controller
      */
     public function create()
     {
-        return view('advertisement.create');
+        $user = Auth::user();
+
+    // Get advertisements for the current user (for Rent, you can modify based on your needs)
+        $allAdvertisements = Advertisement::all()->where('user_id', $user->id);
+        return view('advertisement.create', compact('allAdvertisements'));
     }
 
     /**
@@ -50,11 +54,12 @@ class AdvertisementController extends Controller
             'description' => 'required|string',
             'is_for_rent' => 'required|boolean',
             'price' => 'required|numeric',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validates image file
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'related_ads' => 'nullable|array', 
         ]);
 
         // TODO: Ensure user is authenticated (check if user is logged in)
-        $userId = Auth::id(); // Get the authenticated user's ID
+        $userId = Auth::id();
 
         $adCount = Advertisement::where('user_id', $userId)
                             ->where('is_for_rent', $request->is_for_rent)
@@ -64,21 +69,24 @@ class AdvertisementController extends Controller
             return redirect()->back()->with('error', 'You can only create up to 4 advertisements in this category.');
         }
 
-        // Handle photo upload if it exists
         $photoPath = null;
     if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
         $photo = $request->file('photo');
         $filename = Str::uuid() . '.' . $photo->getClientOriginalExtension();
-
-        // Save in storage/app/public/advertisements
-        // Store in DB as: advertisements/filename.jpg
         $photoPath = $photo->storeAs('advertisements', $filename, 'public');
     }
-        Advertisement::create([
-            ...$validated,
+        $advertisement = Advertisement::create([
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'price' => $validated['price'],
+            'is_for_rent' => $validated['is_for_rent'],
             'user_id' => $userId,
             'photo' => $photoPath,
         ]);
+
+        if ($request->has('related_ads')) {
+            $advertisement->relatedAdvertisements()->sync($request->related_ads); // sync related ads
+        }
 
         return redirect('/advertisement')->with('success', 'Advertisement created successfully!');
     }
@@ -133,19 +141,15 @@ class AdvertisementController extends Controller
 
         $advertisement->fill($validated);
 
-        // ✅ Handle the photo upload if present
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
             $photo = $request->file('photo');
             $filename = Str::uuid() . '.' . $photo->getClientOriginalExtension();
     
-            // Save to storage/app/public/advertisements
             $photoPath = $photo->storeAs('advertisements', $filename, 'public');
     
-            // ✅ Assign stored path to model (not the tmp path!)
             $advertisement->photo = $photoPath;
         }
     
-        // ✅ Save updated model
         $advertisement->save();
     
         return redirect('/advertisement/' . $advertisement->id)
