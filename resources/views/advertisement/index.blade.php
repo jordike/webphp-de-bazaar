@@ -3,9 +3,19 @@
 @section("title", "Advertisements")
 
 @section("content")
+    <x-status-messages />
+
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="fw-bold">Your Advertisements</h1>
-        <a class="btn btn-primary" href="{{ url('advertisement/create') }}">+ Create</a>
+        <h1>Your Advertisements</h1>
+
+        <div>
+            <a class="btn btn-primary" href="advertisement/create">+ Create</a>
+            <form action="{{ route('advertisement.uploadCsv') }}" method="POST" enctype="multipart/form-data" class="d-inline">
+                @csrf
+                <label for="csvFile" class="btn btn-secondary">Upload CSV</label>
+                <input type="file" id="csvFile" name="csvFile" accept=".csv" class="d-none" onchange="this.form.submit()">
+            </form>
+        </div>
     </div>
 
     {{-- FOR RENT --}}

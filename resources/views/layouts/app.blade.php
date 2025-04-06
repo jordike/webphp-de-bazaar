@@ -6,6 +6,22 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+        @stack('styles')
+        @session('theme')
+            <style>
+                :root {
+                    --primary-color: {{ session('theme')->primary_color }};
+                    --secondary-color: {{ session('theme')->secondary_color }};
+                    --background-color: {{ session('theme')->background_color }};
+                    --text-color: {{ session('theme')->text_color }};
+                    --font-family: {{ session('theme')->font_family }};
+                    --font-size: {{ session('theme')->font_size }};
+                    --logo: url("{{ asset('storage/' . session('theme')->logo_path) }}");
+                }
+            </style>
+            <link rel="stylesheet" href="{{ asset('css/default_theme.css') }}">
+        @endsession
 
         <title>{{ env('APP_NAME') }} - @yield("title")</title>
     </head>
@@ -14,7 +30,16 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
             <div class="container">
                 <a class="navbar-brand" href="{{ route('home') }}">
-                    {{ env('APP_NAME') }}
+                    @if (session()->has('theme') && isset(session('theme')->logo_path))
+                        <img
+                            src="{{ asset('storage/' . session('theme')->logo_path) }}"
+                            alt="{{ env('APP_NAME') }} Logo"
+                            title="{{ env('APP_NAME') }}"
+                            class="logo"
+                            style="max-height: 40px !important; max-width: 40px !important;">
+                    @else
+                        {{ env('APP_NAME') }}
+                    @endif
                 </a>
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
@@ -35,13 +60,25 @@
                         </li>
 
                         @auth
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('favorites.index') }}">
+                                    Favorites
+                                </a>
+                            </li>
+
                             @if (auth()->user()->isAdmin())
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('company.index') }}">
+                                    <a class="nav-link" href="{{ route('companies.index') }}">
                                         {{ __('layout.nav.companies') }}
                                     </a>
                                 </li>
                             @endif
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('agenda.index') }}">
+                                    Agenda
+                                </a>
+                            </li>
                         @endauth
                     </ul>
 
@@ -68,11 +105,15 @@
                                         {{ __('layout.profile-dropdown.profile') }}
                                     </a>
 
-                                    @if (Gate::allows('update', auth()->user()->company))
-                                        <a class="dropdown-item" href="{{ route('company.show', auth()->user()->company_id) }}">
+                                    @isset (auth()->user()->company_id)
+                                        <a class="dropdown-item" href="{{ route('company.edit', auth()->user()->company) }}">
                                             {{ __('layout.profile-dropdown.company') }}
                                         </a>
-                                    @endif
+                                    @else
+                                        <a class="dropdown-item" href="{{ route('company.create') }}">
+                                            {{ __('layout.profile-dropdown.create-company') }}
+                                        </a>
+                                    @endisset
 
                                     <div class="dropdown-divider"></div>
 
@@ -108,5 +149,7 @@
 
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        @stack('scripts')
     </body>
 </html>

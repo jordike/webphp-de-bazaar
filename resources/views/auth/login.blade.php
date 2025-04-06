@@ -8,7 +8,7 @@
             {{ __('auth.login.login') }}
         </h1>
 
-        <x-error-message />
+        <x-status-messages />
 
         <form method="POST" action="{{ route('login.post') }}">
             @csrf

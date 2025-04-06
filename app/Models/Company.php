@@ -20,4 +20,29 @@ class Company extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function contracts()
+    {
+        return $this->hasMany(Contract::class);
+    }
+
+    public function themes()
+    {
+        return $this->hasMany(Theme::class);
+    }
+
+    public function currentTheme()
+    {
+        return $this->belongsTo(Theme::class, 'current_theme_id');
+    }
+
+    public function landingPageComponents()
+    {
+        return $this->hasMany(LandingPageComponent::class);
+    }
+
+    public function advertisements()
+    {
+        return $this->hasManyThrough(Advertisement::class, User::class);
+    }
 }

@@ -11,7 +11,7 @@
                 {{ __('company.company') }}
             </h1>
 
-            <x-error-message />
+            <x-status-messages />
 
             <div class="form-group mb-3">
                 <label for="name" class="mb-1">
