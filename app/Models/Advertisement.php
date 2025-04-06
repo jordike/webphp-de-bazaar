@@ -35,6 +35,12 @@ class Advertisement extends Model
         return $this->belongsTo(User::class);
     }
 
+
+    public function relatedAdvertisements()
+    {
+        return $this->belongsToMany(Advertisement::class, 'advertisement_advertisement', 'advertisement_id', 'related_advertisement_id');
+    }
+
     public function favorites()
     {
         return $this->hasMany(Favorite::class);
