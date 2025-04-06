@@ -7,9 +7,7 @@ use App\Models\Advertisement;
 use App\Http\Controllers\Controller;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
-use Endroid\QrCode\ErrorCorrectionLevel;
-use Endroid\QrCode\Encoding\Encoding;
-use Endroid\QrCode\Label\LabelAlignment;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class AdvertisementController extends Controller
@@ -68,10 +66,14 @@ class AdvertisementController extends Controller
 
         // Handle photo upload if it exists
         $photoPath = null;
-        if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
-            $photoPath = $request->file('photo')->store('public/advertisements'); // Store the photo
-        }
+    if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
+        $photo = $request->file('photo');
+        $filename = Str::uuid() . '.' . $photo->getClientOriginalExtension();
 
+        // Save in storage/app/public/advertisements
+        // Store in DB as: advertisements/filename.jpg
+        $photoPath = $photo->storeAs('advertisements', $filename, 'public');
+    }
         Advertisement::create([
             ...$validated,
             'user_id' => $userId,
@@ -129,19 +131,26 @@ class AdvertisementController extends Controller
         return redirect()->back()->with('error', 'You can only create up to 4 advertisements in this category.');
         }
 
-        // Update the advertisement with validated data
-        $advertisement->update($validated);
-    
-        // Handle the photo upload if a new one is uploaded
+        $advertisement->fill($validated);
+
+        // ✅ Handle the photo upload if present
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
-            $photoPath = $request->file('photo')->store('public/advertisements');
+            $photo = $request->file('photo');
+            $filename = Str::uuid() . '.' . $photo->getClientOriginalExtension();
+    
+            // Save to storage/app/public/advertisements
+            $photoPath = $photo->storeAs('advertisements', $filename, 'public');
+    
+            // ✅ Assign stored path to model (not the tmp path!)
             $advertisement->photo = $photoPath;
-            $advertisement->save();
         }
+    
+        // ✅ Save updated model
+        $advertisement->save();
     
         return redirect('/advertisement/' . $advertisement->id)
-        ->with('success', 'Advertisement updated successfully!');
-        }
+            ->with('success', 'Advertisement updated successfully!');
+    }
 
     /**
      * Remove the specified resource from storage.
