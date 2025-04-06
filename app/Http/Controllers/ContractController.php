@@ -51,7 +51,7 @@ class ContractController extends Controller
         ]);
 
         return redirect()->route('companies.edit', $company->id)
-            ->with('success', 'Contract created successfully!');
+            ->with('success', __('contracts.messages.success.created'));
     }
 
     /**
@@ -71,7 +71,7 @@ class ContractController extends Controller
 
         if ($contract->company_id !== $company->id) {
             return redirect()->route('companies.edit', $company->id)
-                ->with('error', 'Contract does not belong to the specified company!');
+                ->with('error', __('contracts.messages.error.not_belong'));
         }
 
         return view('contracts.edit', [
@@ -89,12 +89,12 @@ class ContractController extends Controller
 
         if ($contract->company_id !== $company->id) {
             return redirect()->route('companies.edit', $company->id)
-                ->with('error', 'Contract does not belong to the specified company!');
+                ->with('error', __('contracts.messages.error.not_belong'));
         }
 
         if ($contract->is_signed) {
             return redirect()->route('companies.edit', $company->id)
-                ->with('error', 'Cannot update a signed contract!');
+                ->with('error', __('contracts.messages.error.signed_update'));
         }
 
         $request->validate([
@@ -117,7 +117,7 @@ class ContractController extends Controller
         $contract->save();
 
         return redirect()->route('companies.edit', $company->id)
-            ->with('success', 'Contract updated successfully!');
+            ->with('success', __('contracts.messages.success.updated'));
     }
 
     /**
@@ -129,18 +129,18 @@ class ContractController extends Controller
 
         if ($contract->company_id !== $company->id) {
             return redirect()->route('companies.edit', $company->id)
-                ->with('error', 'Contract does not belong to the specified company!');
+                ->with('error', __('contracts.messages.error.not_belong'));
         }
 
         if ($contract->is_signed) {
             return redirect()->route('companies.edit', $company->id)
-                ->with('error', 'Cannot delete a signed contract!');
+                ->with('error', __('contracts.messages.error.signed_delete'));
         }
 
         $contract->delete();
 
         return redirect()->route('companies.edit', $company->id)
-            ->with('success', 'Contract deleted successfully!');
+            ->with('success', __('contracts.messages.success.deleted'));
     }
 
     public function download(Company $company, Contract $contract)
@@ -149,7 +149,7 @@ class ContractController extends Controller
 
         if ($contract->company_id !== $company->id) {
             return redirect()->route('companies.edit', $company->id)
-                ->with('error', 'Contract does not belong to the specified company!');
+                ->with('error', __('contracts.messages.error.not_belong'));
         }
 
         File::ensureDirectoryExists(storage_path('app/contracts'), 0755, true);

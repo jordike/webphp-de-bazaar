@@ -13,12 +13,12 @@ class RentController extends Controller
     {
         if ($rentedProduct->return_date) {
             return redirect()->route('home')
-                ->with('error', 'This product has already been returned.');
+                ->with('error', __('rent.error_already_returned'));
         }
 
         if ($rentedProduct->user_id != auth()->id()) {
             return redirect()->route('home')
-                ->with('error', 'You are not authorized to return this product.');
+                ->with('error', __('rent.error_not_authorized'));
         }
 
         return view('return', [
@@ -82,6 +82,6 @@ class RentController extends Controller
         ]);
 
         return redirect()->route('home')
-            ->with('success', 'Product returned successfully.');
+            ->with('success', __('rent.success_returned'));
     }
 }

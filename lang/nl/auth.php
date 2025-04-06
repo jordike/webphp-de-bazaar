@@ -1,18 +1,6 @@
 <?php
 
 return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines are used during authentication for various
-    | messages that we need to display to the user. You are free to modify
-    | these language lines according to your application's requirements.
-    |
-    */
-
     'failed' => 'Deze inloggegevens komen niet overeen met onze gegevens.',
     'password' => 'Het opgegeven wachtwoord is onjuist.',
     'throttle' => 'Te veel inlogpogingen. Probeer het opnieuw over :seconds seconden.',
@@ -31,13 +19,20 @@ return [
             'register_as' => 'Registreren als',
             'select_role' => 'Selecteer een rol',
         ],
-        'already_account' => 'Heb je al een account?',
+        'already_account' => 'Heeft u al een account?',
         'login' => 'Inloggen',
+        'success' => 'Registratie succesvol. U kunt nu inloggen.',
     ],
 
     'login' => [
         'login' => 'Inloggen',
-        'no_account' => 'Heb je geen account?',
+        'no_account' => 'Heeft u nog geen account?',
         'create_account' => 'Maak een account aan',
+        'error' => 'De opgegeven inloggegevens komen niet overeen met onze gegevens.',
+        'success' => 'Inloggen succesvol. Welkom terug!',
+    ],
+
+    'logout' => [
+        'success' => 'U bent succesvol uitgelogd.',
     ],
 ];

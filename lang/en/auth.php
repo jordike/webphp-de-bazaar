@@ -33,11 +33,18 @@ return [
         ],
         'already_account' => 'Already have an account?',
         'login' => 'Login',
+        'success' => 'Registration successful. You can now log in.',
     ],
 
     'login' => [
         'login' => 'Login',
         'no_account' => 'Don\'t have an account?',
         'create_account' => 'Create an account',
+        'error' => 'The provided credentials do not match our records.',
+        'success' => 'Login successful. Welcome back!',
+    ],
+
+    'logout' => [
+        'success' => 'You have been logged out successfully.',
     ],
 ];
