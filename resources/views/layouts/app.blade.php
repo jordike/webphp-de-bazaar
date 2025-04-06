@@ -73,6 +73,12 @@
                                     </a>
                                 </li>
                             @endif
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('agenda.index') }}">
+                                    Agenda
+                                </a>
+                            </li>
                         @endauth
                     </ul>
 

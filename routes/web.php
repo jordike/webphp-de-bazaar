@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdvertisementController;
+use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\CompanyController;
@@ -41,6 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/companies/{company}/landing-page/add', [CompanyController::class, 'addLandingPageComponent'])->name('company.landing-page.add');
     Route::post('/companies/{company}/landing-page/order', [CompanyController::class, 'updateLandingPageComponentOrder'])->name('company.landing-page.order');
     Route::delete('/companies/{company}/landing-page/{component}', [CompanyController::class, 'deleteLandingPageComponent'])->name('company.landing-page.delete');
+
+    Route::get('/agenda', [AgendaController::class, 'index'])->name('agenda.index');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
