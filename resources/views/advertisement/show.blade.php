@@ -30,5 +30,34 @@
             </div>
         </div>
     </div>
+
+    @if($advertisement->relatedAdvertisements->count())
+        <div class="mt-5">
+            <h4 class="mb-4">Related Advertisements</h4>
+            <div class="row">
+                @foreach($advertisement->relatedAdvertisements as $relatedAd)
+                    <div class="col-md-3 mb-4">
+                        <div class="card">
+                            @if($relatedAd->photo)
+                                <img src="{{ Storage::url($relatedAd->photo) }}" class="card-img-top" alt="{{ $relatedAd->title }}">
+                            @else
+                                <img src="https://via.placeholder.com/300x200.png?text=No+Image" class="card-img-top" alt="No image available">
+                            @endif
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $relatedAd->title }}</h5>
+                                <p class="card-text text-truncate">{{ $relatedAd->description }}</p>
+                                <p class="card-text">
+                                    <strong>Price:</strong> €{{ number_format($relatedAd->price, 2) }}
+                                </p>
+                                <a href="/advertisement/{{ $relatedAd->id }}" class="btn btn-outline-secondary btn-sm">View</a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @else
+        <p class="mt-4">No related advertisements found.</p>
+    @endif
 </div>
 @endsection
