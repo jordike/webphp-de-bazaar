@@ -39,7 +39,6 @@ class AdvertisementController extends Controller
     {
         $user = Auth::user();
 
-    // Get advertisements for the current user (for Rent, you can modify based on your needs)
         $allAdvertisements = Advertisement::all()->where('user_id', $user->id);
         return view('advertisement.create', compact('allAdvertisements'));
     }
@@ -113,8 +112,12 @@ class AdvertisementController extends Controller
      */
     public function edit(Advertisement $advertisement)
     {
-        return view('advertisement.edit', compact('advertisement'));
-    }
+        $user = Auth::user();
+
+        $allAdvertisements = Advertisement::where('user_id', $user->id)->get();
+        $relatedAds = $advertisement->relatedAdvertisements->pluck('id')->toArray();
+        return view('advertisement.edit', compact('advertisement', 'allAdvertisements', 'relatedAds'));
+ }
 
     /**
      * Update the specified resource in storage.
@@ -151,6 +154,10 @@ class AdvertisementController extends Controller
         }
     
         $advertisement->save();
+
+        if ($request->has('related_ads')) {
+            $advertisement->relatedAdvertisements()->sync($request->related_ads); // Sync related ads
+        }
     
         return redirect('/advertisement/' . $advertisement->id)
             ->with('success', 'Advertisement updated successfully!');
