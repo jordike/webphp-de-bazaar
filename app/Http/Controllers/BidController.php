@@ -23,6 +23,13 @@ class BidController extends Controller
      */
     public function create(Advertisement $advertisement)
     {
+        $pendingBids = auth()->user()->bids()->where('status', 'pending')->count();
+
+        if ($pendingBids >= 4) {
+            return redirect()->route('advertisement.bid.show-bids', $advertisement)
+                ->with('error', 'You can only place a maximum of 4 bids!');
+        }
+
         return view('bid.create', [
             'advertisement' => $advertisement,
         ]);
@@ -43,7 +50,7 @@ class BidController extends Controller
             'amount' => $request->input('amount'),
         ]);
 
-        return redirect()->route('advertisement.show', $advertisement)
+        return redirect()->route('advertisement.bid.show-bids', $advertisement)
             ->with('success', 'Bid placed successfully!');
     }
 
@@ -104,7 +111,7 @@ class BidController extends Controller
             ]);
         }
 
-        return redirect()->route('advertisement.show', $advertisement)
+        return redirect()->route('advertisement.bid.show-bids', $advertisement)
             ->with('success', 'Bid accepted successfully!');
     }
 
@@ -113,7 +120,7 @@ class BidController extends Controller
         $bid->status = 'rejected';
         $bid->save();
 
-        return redirect()->route('advertisement.show', $advertisement)
+        return redirect()->route('advertisement.bid.show-bids', $advertisement)
             ->with('success', 'Bid rejected successfully!');
     }
 }
