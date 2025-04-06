@@ -9,11 +9,11 @@
         <h1>Bids for advertisement: {{ $advertisement->title }}</h1>
 
         <div class="d-flex gap-2">
-            {{-- @if ($advertisement->user_id !== auth()->id()) --}}
+            @if ($advertisement->user_id !== auth()->id())
                 <a class="btn btn-secondary" href="{{ route('advertisement.bid.create', $advertisement) }}">
                     Place bid
                 </a>
-            {{-- @endif --}}
+            @endif
 
             <a class="btn btn-primary" href="{{ route('advertisement.show', $advertisement) }}">
                 Back to advertisement
