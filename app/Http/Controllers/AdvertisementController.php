@@ -218,4 +218,22 @@ class AdvertisementController extends Controller
         return redirect()->route('advertisement.index')
             ->with('success', 'Advertisements created successfully from CSV.');
     }
+
+    public function review(Request $request, Advertisement $advertisement)
+    {
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string|max:1000',
+        ]);
+
+        $advertisement->reviews()->create([
+            'advertisement_id' => $advertisement->id,
+            'user_id' => auth()->id(),
+            'rating' => $request->input('rating'),
+            'comment' => $request->input('comment'),
+        ]);
+
+        return redirect()->route('advertisement.show', $advertisement)
+            ->with('success', 'Review submitted successfully!');
+    }
 }

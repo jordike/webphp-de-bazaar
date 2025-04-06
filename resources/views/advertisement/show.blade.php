@@ -45,6 +45,42 @@
                 @endforelse
             </div>
         </div>
+
+        <div class="mb-3">
+            <h2>Reviews</h2>
+
+            @if(auth()->check())
+                <form action="{{ route('advertisement.review', $advertisement) }}" method="POST" class="mb-3">
+                    @csrf
+
+                    <div class="mb-3">
+                        <label for="rating" class="form-label">Rating (1-5)</label>
+                        <input type="number" name="rating" id="rating" class="form-control" min="1" max="5" step="1" placeholder="Enter a rating (1-5)" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="comment" class="form-label">Comment</label>
+                        <textarea name="comment" id="comment" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Submit Review</button>
+                </form>
+            @else
+                <p class="text-muted">You must be logged in to leave a review.</p>
+            @endif
+
+            <hr />
+
+            @forelse ($advertisement->reviews as $review)
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Rating: {{ $review->rating }}/5</h5>
+                        <p class="card-text">{{ $review->comment }}</p>
+                        <p class="card-text"><small class="text-muted">By {{ $review->user->name }} on {{ $review->created_at->format('d-m-Y') }}</small></p>
+                    </div>
+                </div>
+            @empty
+                <p class="text-muted">No reviews yet.</p>
+            @endforelse
+        </div>
     </div>
 @endsection
 
